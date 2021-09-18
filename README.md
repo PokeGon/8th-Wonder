@@ -17,14 +17,19 @@
 	We will be using a SQL database and AWS to host our web application.
   
 ## Build instructions
-	To clone in git bash
+	To clone the repository in git bash
 	```bash
 	$ git clone https://github.com/PokeGon/8th-Wonder.git
 	```
+	We will host the web application on AWS to be remote accessible. 
 
 ## Unit testing instructions
-
+	Unit tests will cover all use cases laid out in the use case diagrams. They will be found in a designated unit tests file. 
+	The unit test class will prompt the user to select which use cases should be executed.
+ 
 ## System testing instructions
+	The web app may be tested by going to the website and creating an account. 
+	A admin account will be created in order to test all the actions from any user.
 
 ## Other development notes, as needed
 

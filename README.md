@@ -12,8 +12,8 @@ Organization and name scheme for the workspace
 Version-control procedures
 
 	Collaborators should have a forked repository of the app in Evelyn’s account of the project "8th-Wonder", 
-	in their Github. Each collaborator should clone the forked repository.
-	Before each meeting, collaborators should submit a pull request so we can monitor progress and discuss issues.
+	in their Github. Each collaborator should clone the forked repository.Before each meeting, 
+	collaborators should submit a pull request so we can monitor progress and discuss issues.
 
 Tool stack description and setup procedure
 

@@ -8,7 +8,7 @@
 	The project will kept in the folder "app".
 
 ## Version-control procedures
-	Collaborators should have a forked repository of the app in Evelynâ€™s account of the project "8th-Wonder", 
+	Collaborators should have a forked repository of the app in Evelyn's account of the project "8th-Wonder", 
 	in their Github. Each collaborator should clone the forked repository. Before each meeting, 
 	collaborators should submit a pull request so we can monitor progress and discuss issues.
 
@@ -18,9 +18,9 @@
   
 ## Build instructions
 	To clone the repository in git bash
-	```console
+
 	$ git clone https://github.com/PokeGon/8th-Wonder.git
-	```
+
 	We will host the web application on AWS to be remote accessible. 
 
 ## Unit testing instructions

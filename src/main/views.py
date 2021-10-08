@@ -11,6 +11,7 @@ def index(request):
 
 
 def tournament(request):
-    currentTournament = Tournament.objects
-    context = {'currentTournament': currentTournament}
+    # currentTournament = Tournament.objects.cantremember
+    # context = {'currentTournament': currentTournament}
+    context = {}
     return render(request, 'tournament', context)

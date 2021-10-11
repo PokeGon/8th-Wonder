@@ -15,3 +15,23 @@ def tournament(request):
     # context = {'currentTournament': currentTournament}
     context = {}
     return render(request, 'tournament', context)
+
+
+def accountInformation(request):
+    return render(request, 'Account Information')
+
+
+def bank(request):
+    return render(request, 'Bank')
+
+
+def drinksEdit(request):
+    return render(request, 'Drinks Edit')
+
+
+def orderConfirmation(request):
+    return render(request, 'Order Confirmation')
+
+
+def sponsor(request):
+    return render(request, 'Sponsor')

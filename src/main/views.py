@@ -9,6 +9,10 @@ def index(request):
     return HttpResponse("Server is up and running.")
 
 
+def main(request):
+    return render(request, 'Main.html')
+
+
 def tournament(request):
     return render(request, 'tournament.html')
 
@@ -32,28 +36,30 @@ def error(request):
 def accountCreation(request):
     return render(request, "accountCreation.html")
 
+
 def home(request):
-    return render(request,"home.html")
+    return render(request, "home.html")
+
 
 def account(request):
-    return render(request,"account.html")
+    return render(request, "account.html")
 
 
 def accountInformation(request):
-    return render(request, 'Account Information')
+    return render(request, 'AccountInfo.html')
 
 
 def bank(request):
-    return render(request, 'Bank')
+    return render(request, 'Bank.html')
 
 
 def drinksEdit(request):
-    return render(request, 'Drinks Edit')
+    return render(request, 'DrinkEdit.html')
 
 
 def orderConfirmation(request):
-    return render(request, 'Order Confirmation')
+    return render(request, 'OrderConfirmation.html')
 
 
 def sponsor(request):
-    return render(request, 'Sponsor')
+    return render(request, 'Sponsor.html')

@@ -5,7 +5,7 @@
 	The 8th-Wonder Putt Putt Golf web app will be stored in this repository.
 	The documentation and resources for this project will be kept in the "docs" folder. 
 	This includes use case diagrams, the project plan, database diagrams, and more as the project progresses.
-	The project will kept in the folder "app".
+	The project will kept in the folder "src".
 
 ## Version-control procedures
 	Collaborators should have a forked repository of the app in Evelyn's account of the project "8th-Wonder", 

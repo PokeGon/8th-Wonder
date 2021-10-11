@@ -75,13 +75,18 @@ WSGI_APPLICATION = 'eighthwonder.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+  #  'default': {
+   #     'ENGINE': 'django.db.backends.mysql',
+  #     'NAME': 'django', # example - blog_data
+      #  'USER': 'django',
+  #      'PASSWORD': 'eighthwonderdatabasepassword',
+  #      'HOST': 'localhost',
+  #      'PORT': '80',
+  #  }
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django', # example - blog_data
-        'USER': 'django',
-        'PASSWORD': 'eighthwonderdatabasepassword',
-        'HOST': 'localhost',
-        'PORT': '80',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

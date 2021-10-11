@@ -3,7 +3,6 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-from src.main.models import Tournament
 
 
 def index(request):
@@ -11,7 +10,30 @@ def index(request):
 
 
 def tournament(request):
-    # currentTournament = Tournament.objects.cantremember
-    # context = {'currentTournament': currentTournament}
-    context = {}
-    return render(request, 'tournament', context)
+    return render(request, 'tournament.html')
+
+
+def drinks(request):
+    return render(request, "drinks.html")
+
+
+def login(request):
+    return render(request, "login.html")
+
+
+def logout(request):
+    return render(request, "logout.html")
+
+
+def error(request):
+    return render(request, "error.html")
+
+
+def accountCreation(request):
+    return render(request, "accountCreation.html")
+
+def home(request):
+    return render(request,"home.html")
+
+def account(request):
+    return render(request,"account.html")

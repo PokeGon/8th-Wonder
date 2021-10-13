@@ -12,10 +12,11 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('home', views.home, name='home'),
     path('account', views.account, name='account'),
-    path('/accountInfo', views.accountInformation, name='Account Information'),
-    path('/bank', views.bank, name='Bank'),
-    path('/editDrinks', views.drinksEdit, name='Drinks Edit'),
-    path('/orderConfirmation', views.orderConfirmation, name='Order Confirmation'),
-    path('/sponsor', views.sponsor, name='Sponsor'),
+    path('accountInfo', views.accountInformation, name='accountInfo'),
+    path('bank', views.bank, name='bank'),
+    path('editDrinks', views.drinksEdit, name='editDrinks'),
+    path('orderConfirmation', views.orderConfirmation, name='orderConfirmation'),
+    path('sponsor', views.sponsor, name='sponsor'),
+    path('main', views.main, name='main'),
 
 ]

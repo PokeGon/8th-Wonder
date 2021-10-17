@@ -37,27 +37,49 @@ class Manager(models.Model):
     drinksSold = models.IntegerField()
     totalTournamentsMade = models.IntegerField()
 
-    def createTournament():
+    def createTournament(self, name, date, sponsor, approved, completed):
+        tournament = Tournament(name, date, sponsor, approved, completed)
+        tournament.save()  # Saves class instance to the database
+
+    def editTournament(self, tournament, name, date, sponsor, approved, completed):
+        # If we don't want a particular class variable to change, we can just pass in None when calling editTournament()
+        if name:
+            tournament.name = name
+        if date:
+            tournament.date = date
+        if sponsor:
+            tournament.sponsor = sponsor
+        if approved:
+            tournament.approved = approved
+        if completed:
+            tournament.completed = completed
+        tournament.save()
+
+    def verifySponsor(self, sponsor):
         pass
 
-    def editTournament(tournament):
+    def verifyDrinkmeister(self, drinkmeister):
         pass
 
-    def verifySponsor(sponsor):
-        pass
+    def editDrink(self, drink, name, price, instructions):
+        # If we don't want a particular class variable to change, we can just pass in None when calling editDrink()
+        if name:
+            drink.name = name
+        if price:
+            drink.price = price
+        if instructions:
+            drink.instructions = instructions
+        drink.save()
 
-    def verifyDrinkmeister(drinkmeister):
-        pass
-
-    def editDrink(drink):
-        pass
-
-    def addDrink():
-        pass
+    def addDrink(self, name, price, instructions):
+        drink = Drink(name, price, instructions)
+        drink.save()
 
 
 class Player(models.Model):
     currentHole = models.IntegerField()
+    score = models.IntegerField()
+    hole = models.IntegerField()
     currentTournament = models.ForeignKey(
         'Tournament',
         on_delete=models.SET_NULL,
@@ -65,27 +87,27 @@ class Player(models.Model):
         null=True
     )
 
-    def getHole():
-        pass
+    def getHole(self):
+        return self.currentHole
 
-    def getScore():
-        pass
+    def getScore(self):
+        return self.score
 
-    def setScore() :
-        pass
+    def setScore(self, score):
+        self.score = score
 
-    def setHole():
-        pass
+    def setHole(self, hole):
+        self.hole = hole
 
-    def joinTournament(tournament):
-        pass
+    def joinTournament(self, tournament):
+        self.currentTournament = tournament
 
 
 class Sponsor(models.Model):
     companyName = models.CharField(max_length=300)
     canSponsorTournament = models.BooleanField()
 
-    def sponsorTournament():
+    def sponsorTournament(self):
         pass
 
 class Order(models.Model):
@@ -97,18 +119,20 @@ class Order(models.Model):
 class Drinkmeister(models.Model):
     employeeID = models.CharField(max_length=300)
 
-    def makeAndDeliverOrder(order):
+    def makeAndDeliverOrder(self, order):
         pass
 
 class Tournament(models.Model):
     name = models.CharField(max_length=300)
     date = models.DateField()
+    player = models.ForeignKey('Player', on_delete=models.CASCADE)
     sponsor = models.ForeignKey('Sponsor', on_delete=models.CASCADE)
     approved = models.BooleanField()
     completed = models.BooleanField()
 
-    def newGame(name, date):
-        pass
+    def newGame(self, name, date, sponsor, approved, completed):
+        tournament = Tournament(name, date, sponsor, approved, completed)
+        tournament.save()
 
 class Prize(models.Model):
     tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)

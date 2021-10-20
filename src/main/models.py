@@ -4,6 +4,7 @@ from django.db import models
 
 # NOTE: since we can't make variables private and still have Django work, we don't need to add getters and setters
 
+
 class User(models.Model):
     accountInfo = models.OneToOneField('Account', on_delete=models.CASCADE)
     account = models.ForeignKey(
@@ -13,9 +14,16 @@ class User(models.Model):
         null=True
     )
 
-    def orderDrink(self, name, qty):
-        pass
-        # We need a data structure to hold all instances of the Drink class, so I can't implement this right now...
+    def orderDrink(self, name, qty, instructions):
+        for i in range(qty):
+            order = Order()
+            order.timeOrdered = models.TimeField(auto_now=True)
+            order.drink = name
+            order.specificInstructions = instructions
+            order.served = False
+            order.user = self
+            order.save()
+
 
 class Account(models.Model):
     username = models.CharField(max_length=300)
@@ -24,6 +32,7 @@ class Account(models.Model):
     phone = models.CharField(max_length=300)
     email = models.CharField(max_length=300)
     bank = models.OneToOneField('BankAccount', on_delete=models.CASCADE)
+
 
 class BankAccount(models.Model):
     balance = models.IntegerField()
@@ -43,10 +52,6 @@ class Transaction(models.Model):
         null=True
     )
 
-class Drink(models.Model):
-    name = models.CharField(max_length=300)
-    price = models.IntegerField()
-    instructions = models.CharField(max_length=300)
 
 class Manager(models.Model, User):
     yearsWorked = models.IntegerField()
@@ -102,13 +107,23 @@ class Player(models.Model, User):
         tournament.players.add(self)
         tournament.save()
 
+
 class Sponsor(models.Model, User):
     companyName = models.CharField(max_length=300)
     canSponsorTournament = models.BooleanField()
 
     def sponsorTournament(self, tournament):
-        tournament.sponsors.add(self)
-        tournament.save()
+        if self.canSponsorTournament:
+            tournament.sponsors.add(self)
+            tournament.save()
+        else:
+            return "You do not have authorization to sponsor tournaments"
+
+
+class Drink(models.Model):
+    name = models.CharField(max_length=300)
+    price = models.IntegerField()
+    instructions = models.CharField(max_length=300)
 
 
 class Order(models.Model):
@@ -123,9 +138,12 @@ class Drinkmeister(models.Model, User):
     employeeID = models.CharField(max_length=300)
     isAllowedToServeDrinks = models.BooleanField()
 
-    def makeAndDeliverOrder(self, timeOrdered, drink, specificInstructions, served, user):
-        order = Order(timeOrdered, drink, specificInstructions, served, user)
-        order.save()
+    def makeAndDeliverOrder(self, order):
+        if self.isAllowedToServeDrinks:
+            order.served = True
+            order.save()
+        else:
+            return "You do not have authorization to serve drinks."
 
 
 class Tournament(models.Model):
@@ -141,12 +159,13 @@ class Tournament(models.Model):
         tournament = Tournament(name, date, sponsor, approved, completed)
         tournament.save()
 
+
 class Prize(models.Model):
     tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
     amount = models.IntegerField()
+
 
 class Score(models.Model):
     tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
     player = models.ForeignKey('Player', on_delete=models.CASCADE)
     amount = models.IntegerField()
-

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.base import TemplateView
 
 # Create your views here.
 
@@ -44,11 +45,6 @@ def home(request):
 def account(request):
     return render(request, "account.html")
 
-
-def accountInformation(request):
-    return render(request, 'AccountInfo.html')
-
-
 def bank(request):
     return render(request, 'Bank.html')
 
@@ -63,3 +59,6 @@ def orderConfirmation(request):
 
 def sponsor(request):
     return render(request, 'Sponsor.html')
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'account.html'

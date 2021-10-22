@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 # NOTE: since we can't make variables private and still have Django work, we don't need to add getters and setters
@@ -13,6 +14,9 @@ class User(models.Model):
         blank=True,
         null=True
     )
+
+    class Meta:
+        abstract = True
 
     def orderDrink(self, name, qty, instructions):
         for i in range(qty):
@@ -53,7 +57,7 @@ class Transaction(models.Model):
     )
 
 
-class Manager(models.Model, User):
+class Manager(User):
     yearsWorked = models.IntegerField()
     mostMoneyHeld = models.IntegerField()
     drinksSold = models.IntegerField()
@@ -91,9 +95,8 @@ class Manager(models.Model, User):
         drink.save()
 
 
-class Player(models.Model, User):
+class Player(User):
     currentHole = models.IntegerField()
-    score = models.IntegerField()
     hole = models.IntegerField()
     currentTournament = models.ForeignKey(
         'Tournament',
@@ -108,9 +111,9 @@ class Player(models.Model, User):
         tournament.save()
 
 
-class Sponsor(models.Model, User):
+class Sponsor(User):
     companyName = models.CharField(max_length=300)
-    canSponsorTournament = models.BooleanField()
+    canSponsorTournament = models.BooleanField(default=False)
 
     def sponsorTournament(self, tournament):
         if self.canSponsorTournament:
@@ -130,13 +133,13 @@ class Order(models.Model):
     timeOrdered = models.TimeField(auto_now=True)
     drink = models.ForeignKey('Drink', on_delete=models.CASCADE)
     specificInstructions = models.CharField(max_length=300)
-    served = models.BooleanField()
+    served = models.BooleanField(default=False)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
 
 
-class Drinkmeister(models.Model, User):
+class Drinkmeister(User):
     employeeID = models.CharField(max_length=300)
-    isAllowedToServeDrinks = models.BooleanField()
+    isAllowedToServeDrinks = models.BooleanField(default=False)
 
     def makeAndDeliverOrder(self, order):
         if self.isAllowedToServeDrinks:
@@ -150,10 +153,10 @@ class Tournament(models.Model):
     name = models.CharField(max_length=300)
     startTime = models.DateField()
     endTime = models.DateField()
-    players = models.ManyToManyField('Player', on_delete=models.CASCADE)
-    sponsors = models.ManyToManyField('Sponsor', on_delete=models.CASCADE)
-    approved = models.BooleanField()
-    completed = models.BooleanField()
+    players = models.ManyToManyField('Player')
+    sponsors = models.ManyToManyField('Sponsor')
+    approved = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
 
     def newGame(self, name, date, sponsor, approved, completed):
         tournament = Tournament(name, date, sponsor, approved, completed)

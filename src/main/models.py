@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -6,17 +8,25 @@ from django.db import models
 # NOTE: since we can't make variables private and still have Django work, we don't need to add getters and setters
 
 
-class User(models.Model):
-    accountInfo = models.OneToOneField('Account', on_delete=models.CASCADE)
-    account = models.ForeignKey(
-        'BankAccount',
-        models.SET_NULL,
-        blank=True,
-        null=True
+class User(AbstractUser):
+    USER_TYPE_CHOICES = (
+        (1, 'player'),
+        (2, 'sponsor'),
+        (3, 'drinkMeister'),
+        (4, 'manager'),
     )
 
-    class Meta:
-        abstract = True
+    user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
+    username = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    phone = models.IntegerField()
+    email = models.EmailField(max_length=80)
+    bank = models.OneToOneField('BankAccount', on_delete=models.CASCADE)
+
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['name', 'email']
 
     def orderDrink(self, name, qty, instructions):
         for i in range(qty):
@@ -27,15 +37,6 @@ class User(models.Model):
             order.served = False
             order.user = self
             order.save()
-
-
-class Account(models.Model):
-    username = models.CharField(max_length=300)
-    password = models.CharField(max_length=300)
-    name = models.CharField(max_length=300)
-    phone = models.CharField(max_length=300)
-    email = models.CharField(max_length=300)
-    bank = models.OneToOneField('BankAccount', on_delete=models.CASCADE)
 
 
 class BankAccount(models.Model):
@@ -57,17 +58,20 @@ class Transaction(models.Model):
     )
 
 
-class Manager(User):
+class Manager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     yearsWorked = models.IntegerField()
     mostMoneyHeld = models.IntegerField()
     drinksSold = models.IntegerField()
     totalTournamentsMade = models.IntegerField()
 
-    def createTournament(self, name, startTime, endTime, sponsor, approved, completed):
+    @staticmethod
+    def createTournament(name, startTime, endTime, sponsor, approved, completed):
         tournament = Tournament(name, startTime, endTime, sponsor, approved, completed)
         tournament.save()
 
-    def editTournament(self, tournament, name, startTime, endTime, sponsor, approved, completed):
+    @staticmethod
+    def editTournament(tournament, name, startTime, endTime, sponsor, approved, completed):
         tournament.name = name
         tournament.startTime = startTime
         tournament.endTime = endTime
@@ -76,26 +80,31 @@ class Manager(User):
         tournament.completed = completed
         tournament.save()
 
-    def verifySponsor(self, sponsor):
+    @staticmethod
+    def verifySponsor(sponsor):
         sponsor.canSponsorTournament = True
         sponsor.save()
 
-    def verifyDrinkmeister(self, drinkmeister):
+    @staticmethod
+    def verifyDrinkmeister(drinkmeister):
         drinkmeister.isAllowedToServeDrinks = True
         drinkmeister.save()
 
-    def editDrink(self, drink, name, price, instructions):
+    @staticmethod
+    def editDrink(drink, name, price, instructions):
         drink.name = name
         drink.price = price
         drink.instructions = instructions
         drink.save()
 
-    def addDrink(self, name, price, instructions):
+    @staticmethod
+    def addDrink(name, price, instructions):
         drink = Drink(name, price, instructions)
         drink.save()
 
 
-class Player(User):
+class Player(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     currentHole = models.IntegerField()
     hole = models.IntegerField()
     currentTournament = models.ForeignKey(
@@ -111,7 +120,8 @@ class Player(User):
         tournament.save()
 
 
-class Sponsor(User):
+class Sponsor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     companyName = models.CharField(max_length=300)
     canSponsorTournament = models.BooleanField(default=False)
 
@@ -134,10 +144,11 @@ class Order(models.Model):
     drink = models.ForeignKey('Drink', on_delete=models.CASCADE)
     specificInstructions = models.CharField(max_length=300)
     served = models.BooleanField(default=False)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
 
 
-class Drinkmeister(User):
+class Drinkmeister(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     employeeID = models.CharField(max_length=300)
     isAllowedToServeDrinks = models.BooleanField(default=False)
 
@@ -158,7 +169,8 @@ class Tournament(models.Model):
     approved = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
 
-    def newGame(self, name, date, sponsor, approved, completed):
+    @staticmethod
+    def newGame(name, date, sponsor, approved, completed):
         tournament = Tournament(name, date, sponsor, approved, completed)
         tournament.save()
 

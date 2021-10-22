@@ -11,14 +11,14 @@
 <body>
 <div>
     <h2>Please Sign in or Create Account</h2>
-    <form>
-        Email Address:<br> <input type="text" name="email">
-        <br>
-        Password:<br> <input type="text" name="password">
-        <br>
+    <form method ="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type ="submit">Login</button>
     </form>
     <p></p>
-    <button>Login</button>
+
     <p></p>
     <button>Create New Account</button>
 </div>

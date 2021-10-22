@@ -6,4 +6,12 @@
     <span><a href ="{% url 'account' %}" >Account</a></span>
     <span><a href ="{% url 'logout' %}" >Log out</a></span>
 
+
+    <span style = "float:right">
+        {% if user.is_authenticated %}
+            <span>Logged in as {{ user.username }}</span>
+        {% else %}
+            <span><a href ="{% url 'login' %}" >Login</a></span>
+        {% endif %}
+    </span>
 </div>

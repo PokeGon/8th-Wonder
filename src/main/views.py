@@ -60,5 +60,22 @@ def orderConfirmation(request):
 def sponsor(request):
     return render(request, 'Sponsor.html')
 
+
+def transfer(request):
+    return render(request, 'transfer.html')
+
+
+def drinkMeister(request):
+    return render(request, 'drinkMeister.html')
+
+
+def events(request):
+    return render(request, 'events.html')
+
+
+def manager(request):
+    return render(request, "manager.html")
+
+
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account.html'

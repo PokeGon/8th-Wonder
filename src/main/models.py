@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.db import models
 
@@ -7,6 +8,26 @@ from django.db import models
 # Create your models here.
 
 # NOTE: since we can't make variables private and still have Django work, we don't need to add getters and setters
+
+
+class TransactionManager(models.Manager):
+    def create_transaction(self, amount, name):
+        transaction = self.create(amount=amount, name=name)
+        transaction.save()
+        return transaction
+
+
+class Transaction(models.Model):
+    date = models.DateField(auto_now=True)
+    name = models.TextField()
+    amount = models.IntegerField()
+    account = models.ForeignKey(
+        'User',
+        models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    objects = TransactionManager()
 
 
 class User(AbstractUser):
@@ -19,16 +40,21 @@ class User(AbstractUser):
 
     user_type = models.PositiveSmallIntegerField(default=1, choices=USER_TYPE_CHOICES)
     username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=50)
-    phone = models.IntegerField(default=1)
+    password = models.CharField(max_length=300)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)  # validators should be a list
     email = models.EmailField(max_length=80)
-    # bank = models.OneToOneField('BankAccount', default=1, on_delete=models.CASCADE)
-    last_login = models.DateField(default=timezone.now())  # We'll need some method to update this on
-    date_joined = models.DateField(default=timezone.now())  # This only evaluates when User instance is first made!
+    date_joined = models.DateTimeField(auto_now_add=True)  # This only evaluates when User instance is first made!
+    balance = models.IntegerField(default=0)
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['firstname', 'lastname', 'email']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
+
+    def addToBalance(self, amount, name):
+        self.balance += amount
+        Transaction.objects.create_transaction(amount, name)
+        self.save()
 
     def orderDrink(self, name, qty, instructions):
         for i in range(qty):
@@ -39,25 +65,6 @@ class User(AbstractUser):
             order.served = False
             order.user = self
             order.save()
-
-
-class BankAccount(models.Model):
-    balance = models.IntegerField()
-
-    def addToBalance(self, amount):
-        self.balance += amount
-        self.save()
-
-
-class Transaction(models.Model):
-    date = models.DateField(auto_now=True)
-    amount = models.IntegerField()
-    account = models.ForeignKey(
-        'BankAccount',
-        models.SET_NULL,
-        blank=True,
-        null=True
-    )
 
 
 class Manager(models.Model):

@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 from django.db import models
 
 
@@ -16,13 +17,15 @@ class User(AbstractUser):
         (4, 'manager'),
     )
 
-    user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
+    user_type = models.PositiveSmallIntegerField(default=1, choices=USER_TYPE_CHOICES)
     username = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
-    phone = models.IntegerField()
+    phone = models.IntegerField(default=1)
     email = models.EmailField(max_length=80)
-    bank = models.OneToOneField('BankAccount', on_delete=models.CASCADE)
+    bank = models.OneToOneField('BankAccount', default=1, on_delete=models.CASCADE)
+    last_login = models.DateField(default=timezone.now())  # We'll need some method to update this on
+    date_joined = models.DateField(default=timezone.now())  # This only evaluates when User instance is first made!
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
@@ -107,6 +110,7 @@ class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     currentHole = models.IntegerField()
     hole = models.IntegerField()
+    score = models.ForeignKey('Score', default=0, on_delete=models.CASCADE)
     currentTournament = models.ForeignKey(
         'Tournament',
         on_delete=models.SET_NULL,
@@ -182,5 +186,4 @@ class Prize(models.Model):
 
 class Score(models.Model):
     tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
-    player = models.ForeignKey('Player', on_delete=models.CASCADE)
     amount = models.IntegerField()

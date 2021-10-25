@@ -32,10 +32,10 @@ class Transaction(models.Model):
 
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
-        (1, 'player'),
-        (2, 'sponsor'),
-        (3, 'drinkMeister'),
-        (4, 'manager'),
+        (1, 'Player'),
+        (2, 'Sponsor'),
+        (3, 'Drinkmeister'),
+        (4, 'Manager'),
     )
 
     user_type = models.PositiveSmallIntegerField(default=1, choices=USER_TYPE_CHOICES)
@@ -117,15 +117,8 @@ class Player(models.Model):
     currentHole = models.IntegerField()
     hole = models.IntegerField()
     score = models.ForeignKey('Score', default=0, on_delete=models.CASCADE)
-    currentTournament = models.ForeignKey(
-        'Tournament',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
 
     def joinTournament(self, tournament):
-        self.currentTournament = tournament
         tournament.players.add(self)
         tournament.save()
 
@@ -172,7 +165,7 @@ class Drinkmeister(models.Model):
 
 class Tournament(models.Model):
     name = models.CharField(max_length=300)
-    startTime = models.DateField()
+    startTime = models.DateField(7)
     endTime = models.DateField()
     players = models.ManyToManyField('Player')
     sponsors = models.ManyToManyField('Sponsor')

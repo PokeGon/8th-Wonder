@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
+from .models import Sponsor
+from .models import Tournament
+
 # Create your views here.
 
 
@@ -58,7 +61,20 @@ def orderConfirmation(request):
 
 
 def sponsor(request):
-    return render(request, 'Sponsor.html')
+    if request.method == "POST":
+        for tournament in Tournament.objects.all():
+            if tournament.date == request.date:
+                return HttpResponse("Error, there is already a tournament on this day!")
+        newTournament = Tournament()
+        newTournament.name = request.name
+        newTournament.startTime = request.date
+        newTournament.
+        newTournament.save()
+        return HttpResponse("Success!")
+    else:
+        tournaments_list = Tournament.objects.all()
+        context = {'tournaments_list': tournaments_list}
+        return render(request, "sponsor.html", context)
 
 
 def transfer(request):
@@ -75,6 +91,12 @@ def events(request):
 
 def manager(request):
     return render(request, "manager.html")
+
+
+def verification(request):
+    sponsors_list = Sponsor.objects.all()
+    context = {'sponsors_list': sponsors_list}
+    return render(request, "verification.html", context)
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):

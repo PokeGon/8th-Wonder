@@ -19,6 +19,7 @@ urlpatterns = [
     path('drinkMeister', views.drinkMeister, name='drinkMeister'),
     path('events', views.events, name='events'),
     path('manager', views.manager, name='manager'),
+    path('verification', views.verification, name='verification'),
 
     # Django Auth
     path('login/', auth_views.LoginView.as_view(template_name="login.html"), name='login'),

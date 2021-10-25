@@ -11,7 +11,9 @@
 <body>
 {% include 'navBar.html' %}
 <h2> {{ user.username }}'s Profile</h2>
-
+{% if user.user_type == 4 %}
+    {% include "manager.html" %}
+{% endif %}
 
 </body>
 </html>

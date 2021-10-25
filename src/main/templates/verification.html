@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verification Page</title>
+</head>
+<body>
+{% if sponsors_list %}
+    <ul>
+        {% for sponsor in sponsors_list %}
+            <p>{{ sponsor.user.first_name}} {{sponsor.user.last_name}} from the {{ sponsor.companyName}} company</p>
+        {% endfor %}
+    </ul>
+{% endif %}
+</body>
+</html>

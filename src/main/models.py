@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.db import models
+import datetime
 
 
 # Create your models here.
@@ -111,6 +112,11 @@ class Manager(models.Model):
         drink = Drink(name, price, instructions)
         drink.save()
 
+    @staticmethod
+    def newGame(name, date, sponsor, approved, completed):
+        tournament = Tournament(name, date, sponsor, approved, completed)
+        tournament.save()
+
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -165,17 +171,13 @@ class Drinkmeister(models.Model):
 
 class Tournament(models.Model):
     name = models.CharField(max_length=300)
-    startTime = models.DateField(7)
-    endTime = models.DateField()
-    players = models.ManyToManyField('Player')
-    sponsors = models.ManyToManyField('Sponsor')
+    date = models.DateField()
+    startTime = models.TimeField(default=datetime.time(7, 00))
+    endTime = models.TimeField(default=datetime.time(16, 30))
+    players = models.ManyToManyField('Player', blank=True)
+    sponsor = models.ForeignKey('Sponsor', on_delete=models.CASCADE)
     approved = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
-
-    @staticmethod
-    def newGame(name, date, sponsor, approved, completed):
-        tournament = Tournament(name, date, sponsor, approved, completed)
-        tournament.save()
 
 
 class Prize(models.Model):

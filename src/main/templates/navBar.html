@@ -3,17 +3,18 @@
 <div>
 
     <span><a href ="{% url 'home' %}" >Home</a></span>
-    <span><a href ="{% url 'tournament' %}" >Tournaments</a></span>
+    <span><a href ="{% url 'events' %}" >Tournaments</a></span>
     <span><a href ="{% url 'drinks' %}" >Drinks</a></span>
     <span><a href ="{% url 'account' %}" >Account</a></span>
-    <span><a href ="{% url 'logout' %}" >Log out</a></span>
 
 
-    <span style = "float:right">
+
+    <span>
         {% if user.is_authenticated %}
-            <span>Logged in as {{ user.username }}</span>
+        <span><a href ="{% url 'logout' %}" >Log out</a></span>
+            <span style = "float:right">Logged in as {{ user.username }}</span>
         {% else %}
-            <span><a href ="{% url 'login' %}" >Login</a></span>
+            <span style = "float:right"><a href ="{% url 'login' %}" >Login</a></span>
         {% endif %}
     </span>
 </div>

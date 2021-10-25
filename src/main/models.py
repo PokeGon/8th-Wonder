@@ -20,16 +20,15 @@ class User(AbstractUser):
     user_type = models.PositiveSmallIntegerField(default=1, choices=USER_TYPE_CHOICES)
     username = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=50)
-    name = models.CharField(max_length=50)
     phone = models.IntegerField(default=1)
     email = models.EmailField(max_length=80)
-    bank = models.OneToOneField('BankAccount', default=1, on_delete=models.CASCADE)
+    # bank = models.OneToOneField('BankAccount', default=1, on_delete=models.CASCADE)
     last_login = models.DateField(default=timezone.now())  # We'll need some method to update this on
     date_joined = models.DateField(default=timezone.now())  # This only evaluates when User instance is first made!
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'email']
+    REQUIRED_FIELDS = ['firstname', 'lastname', 'email']
 
     def orderDrink(self, name, qty, instructions):
         for i in range(qty):

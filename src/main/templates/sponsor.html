@@ -17,16 +17,16 @@
 
 
 
-    <div class="Sponsor New Tournament">
+    <div class="sponsorTournament">
 
         <h2>Sponsor New Tournament</h2>
 
         <p>Check for available day.</p>
-        <label for="date"></label><input type="datetime-local" name="date" id="date" value="">
-
-        <label for="sponsor">Tournament Name: </label><input id="sponsor" type="text" name="author" value="">
         <form action="{% url 'sponsor' %}" method="post"> {% csrf_token %}
-        <input type="submit" value="Sponsor Tournament - $500">
+            <label for="date"></label><input type="date" name="date" id="date" value="">
+            <label for="tournamentName">Tournament Name: </label><input id="tournamentName" name="tournamentName" type="text" value="">
+            <input type="submit" value="Sponsor Tournament - $500"/>
+        </form>
 
 
 

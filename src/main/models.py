@@ -130,20 +130,20 @@ class Player(models.Model):
 
 
 class Sponsor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='sponsor')
     companyName = models.CharField(max_length=300)
     canSponsorTournament = models.BooleanField(default=False)
 
     def sponsorTournament(self, tournament):
         if self.canSponsorTournament:
-            tournament.sponsors.add(self)
+            tournament.sponsor.add(self)
             tournament.save()
         else:
             return "You do not have authorization to sponsor tournaments"
 
 
 class Drink(models.Model):
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, primary_key=True)
     price = models.IntegerField()
     instructions = models.CharField(max_length=300)
 
@@ -170,8 +170,8 @@ class Drinkmeister(models.Model):
 
 
 class Tournament(models.Model):
-    name = models.CharField(max_length=300)
-    date = models.DateField()
+    name = models.CharField(max_length=300, primary_key=True, unique=True)
+    date = models.DateField(unique=True)
     startTime = models.TimeField(default=datetime.time(7, 00))
     endTime = models.TimeField(default=datetime.time(16, 30))
     players = models.ManyToManyField('Player', blank=True)

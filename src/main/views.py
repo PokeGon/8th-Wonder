@@ -48,27 +48,29 @@ def home(request):
 def account(request):
     return render(request, "account.html")
 
+
 def bank(request):
-    return render(request, 'Bank.html')
+    return render(request, 'bank.html')
 
 
 def drinksEdit(request):
-    return render(request, 'DrinkEdit.html')
+    return render(request, 'drinkEdit.html')
 
 
 def orderConfirmation(request):
-    return render(request, 'OrderConfirmation.html')
+    return render(request, 'orderConfirmation.html')
 
 
 def sponsor(request):
     if request.method == "POST":
-        for tournament in Tournament.objects.all():
-            if tournament.date == request.date:
-                return HttpResponse("Error, there is already a tournament on this day!")
+        if request.user.user_type != 2:
+            return HttpResponse("Only sponsors can sponsor a tournament")
+        if Tournament.objects.filter(date=str(request.date)):
+            return HttpResponse("Error, there is already a tournament on this day!")
         newTournament = Tournament()
-        newTournament.name = request.name
-        newTournament.startTime = request.date
-        newTournament.
+        newTournament.name = request.POST.get('tournamentName')
+        newTournament.date = request.POST.get('date')
+        newTournament.sponsor = request.user.sponsor
         newTournament.save()
         return HttpResponse("Success!")
     else:

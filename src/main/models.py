@@ -154,6 +154,7 @@ class Order(models.Model):
     specificInstructions = models.CharField(max_length=300)
     served = models.BooleanField(default=False)
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    location = models.IntegerField()
 
 
 class Drinkmeister(models.Model):

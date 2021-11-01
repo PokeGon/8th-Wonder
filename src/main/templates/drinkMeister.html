@@ -6,49 +6,34 @@
     <meta name="description" content="Main Page">
     <meta name="author" content="8th Wonder">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>Orders</title>
 
 </head>
 <body>
 
 {% include 'navBar.html' %}
 
-<h1>Recent Orders</h1>
+<h1>Current Orders</h1>
 <div class="drinkOrders" id="#orderNumber">
-    <select name="customer" id="customerId">
-        <option value="123456789">
-            David Gold
-        </option>
-        <option value="634623457">
-            Brandon Steven
-        </option>
-        <option value="617427756">
-            Orange Mike
-        </option>
-        <option value="245679876">
-            Will Sweden
-        </option>
-    </select>
-    <h4>Location: Hole 4</h4>
-    <h4>Ordered at 12:12 PM</h4>
-    <h3>Drinks</h3>
-    <select name="drinksOrdered" id="drinksOrdered(CustomerId)">
-        <option value="nukaCola">Nuka Cola</option>
-        <option value="atomicShake">Atomic Shake</option>
-        <option value="sunsetSarsaparilla">Sunset Sarsaparilla</option>
-        <option value="bioluminescentFluid">Bioluminescent Fluid</option>
-    </select>
-    <button>Next Drink</button>
-    <h4>Instructions</h4>
-    <ol>
-        <li>Coffee Beans : 50 ml</li>
-        <li>Milk : 300 ml</li>
-        <li>Water : 50 ml</li>
-        <li>Vodka : 100 ml</li>
-        <li>Heat to 65 degrees C</li>
-        <li>Mix lightly</li>
-    </ol>
-    <button>Finish</button>
+
+    {% if orderList %}
+    {% for order in orderList %}
+    <p></p>
+    <h3>Order From: {{ order.user }}</h3>
+    <ul>
+        <li>Drink: {{ order.drink }}</li>
+        <li>Instructions: {{ order.specificInstructions }}</li>
+        <li>Time Ordered: {{ order.timeOrdered }}</li>
+        <li>Deliver to Hole: {{ order.location }}</li>
+    </ul>
+    <a><input type="submit" value="Deliver and Finish Order"></a>
+    {% endfor %}
+    {% else %}
+        <p></p>
+        <h3>No Current Orders</h3>
+    {% endif %}
+
+
 </div>
 </body>
 </html>

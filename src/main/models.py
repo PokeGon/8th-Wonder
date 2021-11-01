@@ -122,7 +122,7 @@ class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     currentHole = models.IntegerField()
     hole = models.IntegerField()
-    score = models.ForeignKey('Score', default=0, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
 
     def joinTournament(self, tournament):
         tournament.players.add(self)
@@ -154,7 +154,7 @@ class Order(models.Model):
     specificInstructions = models.CharField(max_length=300)
     served = models.BooleanField(default=False)
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-    location = models.IntegerField()
+    location = models.IntegerField(default=0)
 
 
 class Drinkmeister(models.Model):
@@ -181,11 +181,8 @@ class Tournament(models.Model):
     completed = models.BooleanField(default=False)
 
 
+
 class Prize(models.Model):
     tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
     amount = models.IntegerField()
 
-
-class Score(models.Model):
-    tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
-    amount = models.IntegerField()

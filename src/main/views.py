@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
-from .models import Sponsor, Order, Drink, Tournament
+from .models import Sponsor, Order, Drinkmeister, Tournament
 from .forms import addDrink, deleteDrink, editDrink
 
 # Create your views here.
@@ -109,7 +109,8 @@ def manager(request):
 
 def verification(request):
     sponsors_list = Sponsor.objects.all()
-    context = {'sponsors_list': sponsors_list}
+    drinkmeisters_list = Drinkmeister.objects.all()
+    context = {'sponsors_list': sponsors_list, 'drinkmeisters_list':drinkmeisters_list}
     return render(request, "verification.html", context)
 
 

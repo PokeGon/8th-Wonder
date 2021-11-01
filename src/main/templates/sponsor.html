@@ -1,43 +1,14 @@
-﻿<!DOCTYPE html>
-
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="description" content="Sponsor Tournament">
-    <meta name="author" content="8th Wonder">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sponsor Tournament</title>
-
-</head>
-<body>
-
-    {% include 'navBar.html' %}
-
-    <h1> Welcome to the Sponsor Page.</h1>
-
-
-
-    <div class="sponsorTournament">
-
+﻿<div class="sponsorTournament">
         <h2>Sponsor New Tournament</h2>
-
         <p>Check for available day.</p>
         <form action="{% url 'sponsor' %}" method="post"> {% csrf_token %}
             <label for="date"></label><input type="date" name="date" id="date" value="">
             <label for="tournamentName">Tournament Name: </label><input id="tournamentName" name="tournamentName" type="text" value="">
             <input type="submit" value="Sponsor Tournament - $500"/>
         </form>
+</div>
 
-
-
-    </div>
-
-
-    <div class="Current Tournaments">
-        <p></p>
-        <a href="{% url 'events' %}"><input type="submit" value="See Events"></a>
-    </div>
-
-
-</body>
-</html>
+<div class="Current Tournaments">
+    <p></p>
+    <a href="{% url 'events' %}"><input type="submit" value="See Events"></a>
+</div>

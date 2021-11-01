@@ -14,6 +14,9 @@
 {% if user.user_type == 4 %}
     {% include "manager.html" %}
 {% endif %}
+{% if user.user_type == 2 %}
+    {% include "sponsor.html" %}
+{% endif %}
 
 </body>
 </html>

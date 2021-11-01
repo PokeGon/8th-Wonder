@@ -180,6 +180,9 @@ class Tournament(models.Model):
     approved = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
 
+    def __str__(self):
+        return "Tournament: " + str(self.name) + " " + str(self.date)
+
 
 
 class Prize(models.Model):

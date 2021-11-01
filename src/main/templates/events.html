@@ -14,44 +14,21 @@
 {% include 'navBar.html' %}
 
 <h1> Upcoming Tournaments</h1>
-
+{% if tournaments_list %}
 <div class="tournaments">
-
-    <a href="{% url 'tournament' %}">
+    {% for t in tournaments_list %}
+    <a href="{% url 'tournament' t.name %}">
         <button>
-            <h2>Tournament Name</h2>
-            <h3>22 Oct 2021: 3pm to 8pm</h3>
+            <h2>{{t.name}}</h2>
+            <h3>{{t.date}}: 3pm to 8pm</h3>
         </button>
     </a>
 <br>
-    <a href="{% url 'tournament' %}">
-        <button>
-            <h2>Tournament Name</h2>
-            <h3>22 Oct 2021: 3pm to 8pm</h3>
-        </button>
-    </a>
-<br>
-    <a href="{% url 'tournament' %}">
-        <button>
-            <h2>Tournament Name</h2>
-            <h3>22 Oct 2021: 3pm to 8pm</h3>
-        </button>
-    </a>
-<br>
-    <a href="{% url 'tournament' %}">
-        <button>
-            <h2>Tournament Name</h2>
-            <h3>22 Oct 2021: 3pm to 8pm</h3>
-        </button>
-    </a>
-<br>
-    <a href="{% url 'tournament' %}">
-        <button>
-            <h2>Tournament Name</h2>
-            <h3>22 Oct 2021: 3pm to 8pm</h3>
-        </button>
-    </a>
+    {% endfor %}
 </div>
+{% else %}
+<p>There are no upcoming tournaments</p>
+{% endif %}
 
 <div class="Posts">
 

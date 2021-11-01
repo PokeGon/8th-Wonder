@@ -17,7 +17,7 @@ def main(request):
     return render(request, 'Main.html')
 
 
-def tournament(request):
+def tournament(request, tournamentName):
     return render(request, 'tournament.html')
 
 
@@ -76,8 +76,13 @@ def sponsor(request):
     if request.method == "POST":
         if request.user.user_type != 2:
             return HttpResponse("Only sponsors can sponsor a tournament")
-        if Tournament.objects.filter(date=str(request.date)):
-            return HttpResponse("Error, there is already a tournament on this day!")
+        for t in Tournament.objects.all():
+            if str(t.date) == str(request.POST.get('date')):
+                return HttpResponse("Error, there is already a tournament on this day!")
+            if t.name == request.POST.get('tournamentName'):
+                # Tournaments with almost identical names can still be created
+                # including if the only difference is a space
+                return HttpResponse("Error, there's already a Tournament by this name")
         newTournament = Tournament()
         newTournament.name = request.POST.get('tournamentName')
         newTournament.date = request.POST.get('date')
@@ -100,7 +105,10 @@ def drinkMeister(request):
 
 
 def events(request):
-    return render(request, 'events.html')
+    tournaments_list = Tournament.objects.all()
+
+    context = {'tournaments_list': tournaments_list}
+    return render(request, "events.html", context)
 
 
 def manager(request):

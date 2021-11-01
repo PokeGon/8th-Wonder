@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
-from .models import Sponsor
-from .models import Tournament
+from .models import Sponsor, Order, Drink, Tournament
+from .forms import addDrink, deleteDrink, editDrink
 
 # Create your views here.
 
@@ -54,7 +54,18 @@ def bank(request):
 
 
 def drinksEdit(request):
-    return render(request, 'drinkEdit.html')
+    if request.method == 'POST':
+        addDrinkForm = addDrink(request.POST)
+        deleteDrinkForm = deleteDrink(request.POST)
+        editDrinkForm = editDrink(request.POST)
+        if addDrinkForm.is_valid() or deleteDrinkForm.is_valid() or editDrinkForm.is_valid():
+            return HttpResponseRedirect('#')
+    else:
+        addDrinkForm = addDrink()
+        deleteDrinkForm = deleteDrink()
+        editDrinkForm = editDrink()
+    return render(request, 'drinkEdit.html', {'addDrinkForm': addDrinkForm, 'deleteDrinkForm': deleteDrinkForm,
+                                              'editDrinkForm': editDrinkForm})
 
 
 def orderConfirmation(request):
@@ -84,7 +95,8 @@ def transfer(request):
 
 
 def drinkMeister(request):
-    return render(request, 'drinkMeister.html')
+    orderList = Order.objects.filter(served=False)
+    return render(request, 'drinkMeister.html', {'orderList': orderList})
 
 
 def events(request):

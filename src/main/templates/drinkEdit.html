@@ -18,31 +18,25 @@
   <h2>Edit Drinks</h2>
 
   <p>Add New Drink</p>
-  <label for="new name">Enter Name: </label><input id="new name" type="text" name="author" value="">
-  <label for="new price">Enter Price: </label><input id="new price" type="text" name="author" value="">
-  <input type="submit" value="Confirm">
+  <form method="POST">
+    {% csrf_token %}
+    {{ addDrinkForm }}
+    <input type="submit" value="Confirm">
+  </form>
 
-  <p>Delete Drink</p>
-  <p>Drink: </p>
-  <select>
-    <option value=”NukaCola”>Nuka Cola</option>
-    <option value=”AtomicShake”>Atomic Shake</option>
-    <option value=”Radaway”>Radaway</option>
-    <option value=”Dixon'sJet”>Dixon's Jet'</option>
-  </select>
-  <input type="submit" value="Confirm">
+  <h2>Delete Drink</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ deleteDrinkForm }}
+    <input type="submit" value="Confirm">
+  </form>
 
-  <p>Edit Current Drink</p>
-  <p>Drink: </p>
-  <select>
-    <option value=”NukaCola”>Nuka Cola</option>
-    <option value=”AtomicShake”>Atomic Shake</option>
-    <option value=”Radaway”>Radaway</option>
-    <option value=”Dixon'sJet”>Dixon's Jet'</option>
-  </select>
-  <label for="change name">Enter Name: </label><input id="change name" type="text" name="author" value="">
-  <label for="change price">Enter Price: </label><input id="change price" type="text" name="author" value="">
-  <input type="submit" value="Confirm">
+  <h2>Edit Current Drink</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ editDrinkForm }}
+    <input type="submit" value="Confirm">
+  </form>
 
 </div>
 
@@ -51,6 +45,15 @@
 
   <h2>Available Drinks</h2>
 
+    {% if drinkList %}
+    {% for drink in drinkList %}
+      <p>{{ drink.name }}</p>
+    {% endfor %}
+    {% else %}
+      <p>No Drinks Yet Created</p>
+    {% endif %}
+
+  <!--
   <p>Nuka Cola</p>
   <p>Nuka Cola Quantum</p>
   <p>Atomic Shake</p>
@@ -59,7 +62,7 @@
   <p>Radaway</p>
   <p>Super Stimpack</p>
   <p>Dixon's Jet</p>
-
+--->
 </div>
 
 </body>

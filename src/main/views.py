@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
-from .models import Sponsor, Order, Drinkmeister, Tournament
+from .models import Sponsor, Order, Drinkmeister, Tournament, Manager
 from .forms import addDrink, deleteDrink, editDrink
 
 # Create your views here.

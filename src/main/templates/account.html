@@ -9,14 +9,45 @@
 </head>
 
 <body>
-{% include 'navBar.html' %}
-<h2> {{ user.username }}'s Profile</h2>
-{% if user.user_type == 4 %}
-    {% include "manager.html" %}
-{% endif %}
-{% if user.user_type == 2 %}
-    {% include "sponsor.html" %}
-{% endif %}
+
+    {% include 'navBar.html' %}
+    <h2> {{ user.username }}'s Profile</h2>
+    <div>
+        <h3>Account Information</h3>
+        <h4>General Info</h4>
+        <p><b>User Type:</b> {{ user.get_user_type_display }} <br>
+            <b>Username:</b> {{ user.username }} <br>
+            <b>Phone Number:</b> {{ user.phone_number }} <br>
+            <b>Email:</b> {{ user.email }} <br>
+            <b>Date Joined:</b> {{ user.date_joined }} <br>
+            <b>Account Balance:</b> ${{ user.balance }} <br>
+            {% if user.user_type == 4 %}
+            <h4>Manager Info</h4>
+                <b>Years worked:</b> {{ user.manager.yearsWorked }} <br>
+                <b>Most Money Held:</b> {{ user.manager.mostMoneyHeld }} <br>
+                <b>Drinks sold:</b> {{ user.manager.mostMoneyHeld }} <br>
+                <b>Total Tournaments made:</b> {{ user.manager.totalTournamentsMade }} <br>
+            {% endif %}
+            {% if user.user_type == 3 %}
+            <h4>Drinkmeister Employee Info</h4>
+                <b>Employee ID:</b> {{ user.drinkmeister.employeeID }} <br>
+            {% endif %}
+            {% if user.user_type == 2 %}
+            <h4>Sponsor Info</h4>
+                <b>Company Name:</b> {{ user.sponsor.companyName }} <br>
+            {% endif %}
+
+        </p>
+
+    </div>
+    {% if user.user_type == 4 %}
+        <h4>Other options</h4>
+        {% include "manager.html" %}
+    {% endif %}
+    {% if user.user_type == 2 %}
+        <h4>Other options</h4>
+        {% include "sponsor.html" %}
+    {% endif %}
 
 </body>
 </html>

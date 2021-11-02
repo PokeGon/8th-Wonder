@@ -69,7 +69,7 @@ class User(AbstractUser):
 
 
 class Manager(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='manager')
     yearsWorked = models.IntegerField()
     mostMoneyHeld = models.IntegerField()
     drinksSold = models.IntegerField()
@@ -119,7 +119,7 @@ class Manager(models.Model):
 
 
 class Player(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='player')
     currentHole = models.IntegerField()
     hole = models.IntegerField()
     score = models.IntegerField(default=0)
@@ -158,7 +158,7 @@ class Order(models.Model):
 
 
 class Drinkmeister(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='drinkmeister')
     employeeID = models.CharField(max_length=300)
     isAllowedToServeDrinks = models.BooleanField(default=False)
 

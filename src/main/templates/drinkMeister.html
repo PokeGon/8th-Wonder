@@ -16,17 +16,26 @@
 <h1>Current Orders</h1>
 <div class="drinkOrders" id="#orderNumber">
 
+    <form action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
+        <select id="order" name="order">
+        {% for order in orderList %}
+            <option value="{{ order.id }}">{{ order.user }}</option>
+        {% endfor %}
+    </select>
+        <a><input type="submit" value="Deliver and Finish Order"></a>
+    </form>
+
     {% if orderList %}
     {% for order in orderList %}
     <p></p>
-    <h3>Order From: {{ order.user }}</h3>
+    <h3 id="{{ order.user }}">Order From: {{ order.user }}</h3>
     <ul>
-        <li>Drink: {{ order.drink }}</li>
+        <li>Drink: {{ order.drink.name }}</li>
         <li>Instructions: {{ order.specificInstructions }}</li>
         <li>Time Ordered: {{ order.timeOrdered }}</li>
         <li>Deliver to Hole: {{ order.location }}</li>
     </ul>
-    <a><input type="submit" value="Deliver and Finish Order"></a>
+
     {% endfor %}
     {% else %}
         <p></p>

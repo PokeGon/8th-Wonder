@@ -3,8 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
-from .models import Sponsor, Order, Drinkmeister, Tournament, Manager
-from .forms import addDrink, deleteDrink, editDrink
+
+from .models import Sponsor, Order, Drinkmeister, Tournament, Manager, Drink
+from .forms import addDrink
 
 # Create your views here.
 
@@ -22,7 +23,21 @@ def tournament(request, tournamentName):
 
 
 def drinks(request):
-    return render(request, "drinks.html")
+    if request.method == 'POST':
+        newDrink = Drink.objects.get(name=request.POST.get('newDrink'))
+        newOrder = Order()
+        newOrder.user = request.user
+        newOrder.drink = newDrink
+        newOrder.location = request.POST.get('location')
+        newOrder.specificInstructions = request.POST.get('instructions')
+        newOrder.save()
+        return render(request, 'orderConfirmation.html')
+
+    else:
+        orders = Order.objects.all()
+        drinkList = Drink.objects.all()
+        user = request.user.username
+        return render(request, "drinks.html", {"orders": orders, "drinkList": drinkList, "user": user})
 
 
 def login(request):
@@ -55,17 +70,36 @@ def bank(request):
 
 def drinksEdit(request):
     if request.method == 'POST':
+        if request.user.user_type != 4:
+            return HttpResponse("Only managers can create or edit drinks.")
+
         addDrinkForm = addDrink(request.POST)
-        deleteDrinkForm = deleteDrink(request.POST)
-        editDrinkForm = editDrink(request.POST)
-        if addDrinkForm.is_valid() or deleteDrinkForm.is_valid() or editDrinkForm.is_valid():
-            return HttpResponseRedirect('#')
+        if addDrinkForm.is_valid() and not request.POST.get('drink'):
+            newDrink = Drink()
+            newDrink.name = request.POST.get('name')
+            newDrink.price = request.POST.get('price')
+            newDrink.instructions = request.POST.get('instructions')
+            newDrink.save()
+        elif request.POST.get('deleteDrink'):
+            drink = request.POST.get('deleteDrink')
+            deleteDrink = Drink.objects.filter(name=drink)
+            deleteDrink.delete()
+        elif request.POST.get('drink') and request.POST.get('name') and request.POST.get('price') \
+                and request.POST.get('instructions'):
+            drink = request.POST.get('drink')
+            editDrink = Drink.objects.filter(name=drink)
+            editDrink.delete()
+            newDrink = Drink()
+            newDrink.name = request.POST.get('name')
+            newDrink.price = request.POST.get('price')
+            newDrink.instructions = request.POST.get('instructions')
+            newDrink.save()
+        return HttpResponseRedirect('#')
+
     else:
+        drinkList = Drink.objects.all()
         addDrinkForm = addDrink()
-        deleteDrinkForm = deleteDrink()
-        editDrinkForm = editDrink()
-    return render(request, 'drinkEdit.html', {'addDrinkForm': addDrinkForm, 'deleteDrinkForm': deleteDrinkForm,
-                                              'editDrinkForm': editDrinkForm})
+    return render(request, 'drinkEdit.html', {'addDrinkForm': addDrinkForm, 'drinkList': drinkList})
 
 
 def orderConfirmation(request):
@@ -100,8 +134,15 @@ def transfer(request):
 
 
 def drinkMeister(request):
-    orderList = Order.objects.filter(served=False)
-    return render(request, 'drinkMeister.html', {'orderList': orderList})
+    if request.method == "POST":
+        if request.user.user_type != 3 and request.user.user_type != 4:
+            return HttpResponse("Only Drink Meisters can deliver orders")
+        order = Order.objects.get(id=request.POST.get('order'))
+        order.delete()
+        return HttpResponseRedirect('#')
+    else:
+        orderList = Order.objects.filter(served=False)
+        return render(request, 'drinkMeister.html', {'orderList': orderList})
 
 
 def events(request):

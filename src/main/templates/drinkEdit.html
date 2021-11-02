@@ -18,23 +18,32 @@
   <h2>Edit Drinks</h2>
 
   <p>Add New Drink</p>
-  <form method="POST">
+  <form action="{% url 'editDrinks' %}" method="POST">
     {% csrf_token %}
     {{ addDrinkForm }}
     <input type="submit" value="Confirm">
   </form>
 
   <h2>Delete Drink</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ deleteDrinkForm }}
+  <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
+    <label for="deleteDrink">Drink: </label><select id="deleteDrink" name="deleteDrink">
+      {% for drink in drinkList %}
+      <option value="{{ drink.name }}">{{ drink.name }}</option>
+    {% endfor %}
+    </select>
     <input type="submit" value="Confirm">
   </form>
 
   <h2>Edit Current Drink</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ editDrinkForm }}
+  <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
+    <label for="drink">Drink: </label><select id="drink" name="drink">
+      {% for drink in drinkList %}
+      <option value="{{ drink.name }}">{{ drink.name }}</option>
+    {% endfor %}
+    </select>
+    <label for="name">New Name: </label><input id="name" type="text" name="name" value="" required>
+    <label for="price">New Price: </label><input id="price" type="text" name="price" value="" required>
+    <lable for="instructions">New Instructions: </lable><input id="instructions" type="text" name="instructions" value="" required>
     <input type="submit" value="Confirm">
   </form>
 
@@ -47,22 +56,14 @@
 
     {% if drinkList %}
     {% for drink in drinkList %}
-      <p>{{ drink.name }}</p>
+      <h3>{{ drink.name }}</h3>
+      <p> - {{ drink.price }}</p>
+      <p> - {{ drink.instructions }}</p>
     {% endfor %}
     {% else %}
       <p>No Drinks Yet Created</p>
     {% endif %}
 
-  <!--
-  <p>Nuka Cola</p>
-  <p>Nuka Cola Quantum</p>
-  <p>Atomic Shake</p>
-  <p>Sunset Sarsaparilla</p>
-  <p>Bioluminescent Fluid</p>
-  <p>Radaway</p>
-  <p>Super Stimpack</p>
-  <p>Dixon's Jet</p>
---->
 </div>
 
 </body>

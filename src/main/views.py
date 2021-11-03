@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
 
-from .models import Sponsor, Order, Drinkmeister, Tournament, Manager, Drink
-from .forms import addDrink
+from .models import *
+from .forms import *
 
 # Create your views here.
 
@@ -65,7 +65,11 @@ def account(request):
 
 
 def bank(request):
-    return render(request, 'bank.html')
+    context = {}
+    context['current_balance'] = request.user.balance/100 if not request.user.is_anonymous else 0.00
+    if not request.user.is_anonymous:
+        context['transactions'] = Transaction.objects.filter(account=request.user)
+    return render(request, 'bank.html', context)
 
 
 def drinksEdit(request):
@@ -165,3 +169,6 @@ def verification(request):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account.html'
+
+def handler404(request, exception):
+    return render(request, '404.html', {})

@@ -2,36 +2,48 @@
 
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="description" content="Bank">
-  <meta name="author" content="8th Wonder">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bank</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Bank Page">
+    <meta name="author" content="8th Wonder">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Page</title>
 
 </head>
 <body>
-
 {% include 'navBar.html' %}
 
-<div class="Balance">
-
-  <h2>Current Balance</h2>
-  <p>$ 105.09</p>
-  <a href="{% url 'transfer' %}"><input type="submit" value="Transfer">
-  </a>
-
+<div id='current-balance'>
+    Current Balance: ${{ current_balance|floatformat:2 }}
 </div>
 
+<script>
+    function revealTransfer() {
+        let x =document.getElementById("transfer-reveal")
+        x.style.display = x.style.display === "none" ? "block" : "none";
+        x = document.getElementById("transfer-form")
+        x.style.display = x.style.display === "none" ? "block" : "none";
+    } 
+</script>
 
-<div class="Recent Transfers">
+<button onclick="revealTransfer()" id="transfer-reveal">Transfer</button>
 
-  <h2>Recent Transfers</h2>
+<form id="transfer-form" style="display:none">
+    Transfer Amount<br>
+    $<input id="trans-amount" type="number" min="0" step="0.01" /><br>
+    Destination Account<br>
+    <input id="dest-account"/><br>
+    <input type="submit" value="Submit"> <button onclick="revealTransfer()" id="transfer-reveal">Cancel</button>
+</form>
 
-  <p>Drink -$10.00</p>
-  <p>Incoming +$100.00</p>
-  <p>Drink -$8.80</p>
-
+<div>
+    Recent Transfers:
+    {% for t in transactions %}
+        <br>{{ t.name }} {{ t.amount }}
+    {% empty %}
+        <br>{{ t.name }} {{ t.amount }}
+        No Transfers
+    {% endfor %}
 </div>
+
 
 </body>
-</html>

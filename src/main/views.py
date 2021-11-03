@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
@@ -8,14 +8,6 @@ from .models import *
 from .forms import *
 
 # Create your views here.
-
-
-def index(request):
-    return HttpResponse("Server is up and running.")
-
-
-def main(request):
-    return render(request, 'Main.html')
 
 
 def tournament(request, tournamentName):
@@ -57,7 +49,10 @@ def accountCreation(request):
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "index.html")
+
+def homeRedirect(request):
+    return redirect('home')
 
 
 def account(request):
@@ -126,7 +121,7 @@ def sponsor(request):
         newTournament.date = request.POST.get('date')
         newTournament.sponsor = request.user.sponsor
         newTournament.save()
-        return HttpResponse("Success!")
+        return HttpResponse("Success for " + str(request.user.sponsor))
     else:
         tournaments_list = Tournament.objects.all()
         context = {'tournaments_list': tournaments_list}

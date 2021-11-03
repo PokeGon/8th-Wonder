@@ -159,7 +159,7 @@ class Order(models.Model):
 
 class Drinkmeister(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='drinkmeister')
-    employeeID = models.CharField(max_length=300)
+    employeeID = models.AutoField(primary_key=True)
     isAllowedToServeDrinks = models.BooleanField(default=False)
 
     def makeAndDeliverOrder(self, order):
@@ -168,6 +168,9 @@ class Drinkmeister(models.Model):
             order.save()
         else:
             return "You do not have authorization to serve drinks."
+
+    def __str__(self):
+        return str(self.user.name) + " " + str(self.employeeID)
 
 
 class Tournament(models.Model):

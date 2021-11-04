@@ -19,7 +19,7 @@
     <form action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
         <select id="order" name="order">
         {% for order in orderList %}
-            <option value="{{ order.id }}">{{ order.user }}</option>
+            <option value="{{ order.id }}">{{ order.user }} - {{ order.drink.name }}</option>
         {% endfor %}
     </select>
         <a><input type="submit" value="Deliver and Finish Order"></a>

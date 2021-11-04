@@ -153,12 +153,12 @@ class Order(models.Model):
     drink = models.ForeignKey('Drink', on_delete=models.CASCADE)
     specificInstructions = models.CharField(max_length=300)
     served = models.BooleanField(default=False)
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     location = models.IntegerField(default=0)
 
 
 class Drinkmeister(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='drinkmeister')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='drinkmeister')
     employeeID = models.AutoField(primary_key=True)
     isAllowedToServeDrinks = models.BooleanField(default=False)
 

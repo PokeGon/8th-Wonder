@@ -17,14 +17,14 @@
 
   <h2>Edit Drinks</h2>
 
-  <p>Add New Drink</p>
+  <h3>Add New Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">
     {% csrf_token %}
     {{ addDrinkForm }}
     <input type="submit" value="Confirm">
   </form>
 
-  <h2>Delete Drink</h2>
+  <h3>Delete Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
     <label for="deleteDrink">Drink: </label><select id="deleteDrink" name="deleteDrink">
       {% for drink in drinkList %}
@@ -34,7 +34,7 @@
     <input type="submit" value="Confirm">
   </form>
 
-  <h2>Edit Current Drink</h2>
+  <h3>Edit Current Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
     <label for="drink">Drink: </label><select id="drink" name="drink">
       {% for drink in drinkList %}
@@ -52,11 +52,11 @@
 
 <div class="Available Drinks">
 
-  <h2>Available Drinks</h2>
+  <h3>Available Drinks</h3>
 
     {% if drinkList %}
     {% for drink in drinkList %}
-      <h3>{{ drink.name }}</h3>
+      <h4>{{ drink.name }}</h4>
       <p> - {{ drink.price }}</p>
       <p> - {{ drink.instructions }}</p>
     {% endfor %}

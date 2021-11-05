@@ -28,9 +28,11 @@
   <h3>Delete Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
     <label for="deleteDrink">Drink: </label><select id="deleteDrink" name="deleteDrink">
-      {% for drink in drinkList %}
-      <option value="{{ drink.name }}">{{ drink.name }}</option>
-    {% endfor %}
+      {% if drinkList %}
+        {% for drink in drinkList %}
+        <option value="{{ drink.name }}">{{ drink.name }}</option>
+        {% endfor %}
+      {% endif %}
     </select>
     <input type="submit" value="Confirm">
   </form>
@@ -38,9 +40,11 @@
   <h3>Edit Current Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
     <label for="drink">Drink: </label><select id="drink" name="drink">
-      {% for drink in drinkList %}
-      <option value="{{ drink.name }}">{{ drink.name }}</option>
-    {% endfor %}
+      {% if drinkList %}
+        {% for drink in drinkList %}
+        <option value="{{ drink.name }}">{{ drink.name }}</option>
+        {% endfor %}
+      {% endif %}
     </select>
     <label for="name">New Name: </label><input id="name" type="text" name="name" value="" required>
     <label for="price">New Price: </label><input id="price" type="text" name="price" value="" required>

@@ -18,6 +18,7 @@
 <div>
     <h2>Drinks Menu</h2>
 
+    {% if orders != null %}
     {% for order in orders %}
         {% if order.user.username == user %}
             <h3>Waiting for Order: </h3>
@@ -29,6 +30,7 @@
             </ul>
         {% endif %}
     {% endfor %}
+    {% endif %}
 
     <h3>New Order: </h3>
       <form action="{% url 'drinks' %}" method="POST">{% csrf_token %}

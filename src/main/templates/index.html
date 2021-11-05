@@ -7,23 +7,19 @@
     <meta name="author" content="8th Wonder">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
-
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-{% include 'navBar.html' %}
+    {% include 'navBar.html' %}
 
-<p></p>
+    <p></p>
 
-
-<a href="{% url 'events' %}"><input type="submit" value="See Events"></a>
-
-
-<div class="Top Scores">
-
-    <h2>Top Scores</h2>
-
-    <h3>Team Alpha: 18</h3>
-    <h3>Team Beta: 20</h3>
-    <h3>Team Gamma: 21</h3>
-
-</div>
+    <a href="{% url 'events' %}"><input type="submit" value="See Events"></a>
+    <div class="Top Scores">
+        <h2>Top Scores</h2>
+        <h3>Team Alpha: 18</h3>
+        <h3>Team Beta: 20</h3>
+        <h3>Team Gamma: 21</h3>
+    </div>
+</body>

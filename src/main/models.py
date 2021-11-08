@@ -120,8 +120,8 @@ class Manager(models.Model):
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='player')
-    currentHole = models.IntegerField()
-    hole = models.IntegerField()
+    currentHole = models.IntegerField(default=0)
+    hole = models.IntegerField(default=0)
     score = models.IntegerField(default=0)
 
     def joinTournament(self, tournament):
@@ -170,7 +170,7 @@ class Drinkmeister(models.Model):
             return "You do not have authorization to serve drinks."
 
     def __str__(self):
-        return str(self.user.name) + " " + str(self.employeeID)
+        return str(self.user.first_name) + " " + str(self.employeeID)
 
 
 class Tournament(models.Model):

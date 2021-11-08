@@ -21,6 +21,7 @@ urlpatterns = [
     path('events', views.events, name='events'),
     path('manager', views.manager, name='manager'),
     path('verification', views.verification, name='verification'),
+    path('createAccount', views.createAccount, name='createAccount'),
 
     # Django Auth
     path('login/', auth_views.LoginView.as_view(template_name="login.html"), name='login'),

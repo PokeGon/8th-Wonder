@@ -14,31 +14,33 @@
 
 {% include 'navBar.html' %}
 
-<div>
+<div class ="createAccount">
     <h2>Create a new Account</h2>
-    <form>
-        Email Address: <input type="email" name="email">
+    <form action ="{% url 'createAccount' %}" method="post"> {% csrf_token %}
+        <label for = "email">Email</label><input type="email" name="email" id="email" value="">
         <br>
-        Password: <input type="password" name="password">
+        <label for = "username">Username</label><input type="text" name="username" id="username" value="">
         <br>
-        Name: <input type="text" name="email">
+        <label for = "password">Password</label><input type="password" name="password" id="password" value="">
         <br>
-        Phone Number: <input type="text" name="number">
+        <label for = "firstName">First Name</label><input type="text" name="firstName" id="firstName" value="">
+        <br>
+        <label for = "lastName">Last Name</label><input type="text" name="lastName" id="lastName" value="">
+        <br>
+        <label for = "phoneNumber">Phone Number</label><input type="number" name="phoneNumber" id="phoneNumber" value="">
         <br>
         User Type:
-
-        <select name="userType" id="type">
-            <option value="Player">Player</option>
-            <option value="Manager">Manager</option>
-            <option value="Sponsor">Sponsor</option>
-            <option value="Drinkmeister">Drinkmeister</option>
+        <label for="userType"></label><select name="userType" id="userType">
+            <option value="1">Player</option>
+            <option value="4">Manager</option>
+            <option value="2">Sponsor</option>
+            <option value="3">Drinkmeister</option>
         </select>
-
         <br>
-
+        <button type="submit" value="Create New Account">Create Account</button>
     </form>
     <p></p>
-    <button>Create New Account</button>
+
     <br> <br>
     <a href="{% url 'account' %}"><input type="submit" value="Already Have an Account?"></a>
 

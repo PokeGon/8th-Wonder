@@ -3,9 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
-
 from .models import *
 from .forms import *
+
 
 # Create your views here.
 
@@ -51,6 +51,7 @@ def accountCreation(request):
 def home(request):
     return render(request, "index.html")
 
+
 def homeRedirect(request):
     return redirect('home')
 
@@ -61,7 +62,7 @@ def account(request):
 
 def bank(request):
     context = {}
-    context['current_balance'] = request.user.balance/100 if not request.user.is_anonymous else 0.00
+    context['current_balance'] = request.user.balance / 100 if not request.user.is_anonymous else 0.00
     if not request.user.is_anonymous:
         context['transactions'] = Transaction.objects.filter(account=request.user)
     return render(request, 'bank.html', context)
@@ -103,6 +104,57 @@ def drinksEdit(request):
 
 def orderConfirmation(request):
     return render(request, 'orderConfirmation.html')
+
+
+def createAccount(request):
+    for u in User.objects.all():
+        if u.username == request.POST.get('username'):
+            return HttpResponse("Error, There is already a User with this name")
+    newUser = User()
+    newUser.username = request.POST.get('username')
+    newUser.first_name = request.POST.get('firstName')
+    newUser.last_name = request.POST.get('lastName')
+    newUser.email = request.POST.get('email')
+    newUser.password = request.POST.get('password')
+    newUser.phone_number = request.POST.get('phoneNumber')
+    newUser.user_type = request.POST.get('userType')
+    createUser = User.objects.create_user(newUser.username, newUser.email, newUser.password)
+    createUser.first_name = newUser.first_name
+    createUser.last_name = newUser.last_name
+    createUser.phone_number = newUser.phone_number
+    createUser.user_type = newUser.user_type
+    createUser.save()
+
+    if createUser.user_type == "1":
+        newPlayer = Player()
+        newPlayer.user = createUser
+        newPlayer.hole = 0
+        newPlayer.currentHole = 0
+        newPlayer.save()
+
+    if createUser.user_type == "2":
+        newSponsor = Sponsor()
+        newSponsor.user = createUser
+        newSponsor.companyName = ""
+        newSponsor.canSponsorTournament = False
+        newSponsor.save()
+
+    if createUser.user_type == "3":
+        newDrinkmeister = Drinkmeister()
+        newDrinkmeister.user = createUser
+        newDrinkmeister.isAllowedToServeDrinks = False
+        newDrinkmeister.save()
+
+    if createUser.user_type == "4":
+        newManger = Manager()
+        newManger.user = createUser
+        newManger.yearsWorked = 0
+        newManger.mostMoneyHeld = 0
+        newManger.drinksSold = 0
+        newManger.totalTournamentsMade = 0
+        newManger.save()
+
+    return HttpResponseRedirect('login')
 
 
 def sponsor(request):
@@ -158,12 +210,13 @@ def manager(request):
 def verification(request):
     sponsors_list = Sponsor.objects.all()
     drinkmeisters_list = Drinkmeister.objects.all()
-    context = {'sponsors_list': sponsors_list, 'drinkmeisters_list':drinkmeisters_list}
+    context = {'sponsors_list': sponsors_list, 'drinkmeisters_list': drinkmeisters_list}
     return render(request, "verification.html", context)
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account.html'
+
 
 def handler404(request, exception):
     return render(request, '404.html', {})

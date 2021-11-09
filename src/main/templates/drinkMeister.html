@@ -15,7 +15,7 @@
 {% include 'navBar.html' %}
 
 <h1>Current Orders</h1>
-<div class="drinkOrders" id="#orderNumber">
+<div class="left column" id="#orderNumber">
 
     <form action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
         <select id="order" name="order">

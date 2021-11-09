@@ -11,8 +11,10 @@
 </head>
 
 <body>
-<div>
+
     {% include 'navBar.html' %}
+
+<div class="left column">
     <h2>Please Sign in or Create Account</h2>
     <form method ="post">
         {% csrf_token %}

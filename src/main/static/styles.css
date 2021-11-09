@@ -1,21 +1,53 @@
 body {
-    background: linear-gradient(to right, #FEFEE3 0%, #FEFEE3 50%, #4C956C 50%, #4C956C 100%);
+    background: linear-gradient(to right, #FEFEE3 0%, #FEFEE3 60%, #4C956C 40%, #4C956C 100%);
+    margin: 0;
 }
 
 .navbutton1 {
     border-style: solid;
     border-color: #D68C45;
     background: #D68C45;
+    text-decoration: none;
+    font-size: 32px;
+    color: black;
+    width: 19.75%;
+    display: inline-block;
+    border: 0;
+    text-align: center;
 }
 
 .navbutton2 {
     border-style: solid;
     border-color: #FFC9B9;
     background: #FFC9B9;
+    text-decoration: none;
+    font-size: 32px;
+    color: black;
+    width: 19.75%;
+    display: inline-block;
+    border: 0;
+    text-align: center;
 }
 
 .pagetitle {
     background: #2C6E49;
     color: white;
-    
+    font-size: 64px;
+    text-align: center;
+    margin: 0;
+}
+
+.column {
+    float: left;
+    padding: 10px;
+}
+
+
+.left {
+    width: 60%;
+}
+
+.right {
+    width: 35%;
+    text-align: center;
 }

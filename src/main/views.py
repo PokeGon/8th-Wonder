@@ -26,6 +26,8 @@ def drinks(request):
         return render(request, 'orderConfirmation.html')
 
     else:
+        if request.user.is_anonymous:
+            return HttpResponseRedirect('../login')
         orders = Order.objects.all()
         drinkList = Drink.objects.all()
         user = request.user.username
@@ -97,9 +99,11 @@ def drinksEdit(request):
         return HttpResponseRedirect('#')
 
     else:
+        if request.user.is_anonymous:
+            return HttpResponseRedirect('../login')
         drinkList = Drink.objects.all()
         addDrinkForm = addDrink()
-    return render(request, 'drinkEdit.html', {'addDrinkForm': addDrinkForm, 'drinkList': drinkList})
+        return render(request, 'drinkEdit.html', {'addDrinkForm': addDrinkForm, 'drinkList': drinkList})
 
 
 def orderConfirmation(request):
@@ -175,6 +179,8 @@ def sponsor(request):
         newTournament.save()
         return HttpResponse("Success for " + str(request.user.sponsor))
     else:
+        if request.user.is_anonymous:
+            return HttpResponseRedirect('../login')
         tournaments_list = Tournament.objects.all()
         context = {'tournaments_list': tournaments_list}
         return render(request, "sponsor.html", context)
@@ -192,6 +198,8 @@ def drinkMeister(request):
         order.delete()
         return HttpResponseRedirect('#')
     else:
+        if request.user.is_anonymous:
+            return HttpResponseRedirect('../login')
         orderList = Order.objects.filter(served=False)
         return render(request, 'drinkMeister.html', {'orderList': orderList})
 

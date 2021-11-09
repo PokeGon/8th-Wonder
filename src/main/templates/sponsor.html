@@ -1,4 +1,22 @@
-﻿<div class="sponsorTournament">
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Order Confirmation">
+  <meta name="author" content="8th Wonder">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsor</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
+{% include 'navBar.html' %}
+
+
+
+<div class="left column">
         <h2>Sponsor New Tournament</h2>
         <p>Check for available day.</p>
         <form action="{% url 'sponsor' %}" method="post"> {% csrf_token %}
@@ -8,7 +26,7 @@
         </form>
 </div>
 
-<div class="Current Tournaments">
+<div  class="right column">
     <p></p>
     <a href="{% url 'events' %}"><input type="submit" value="See Events"></a>
 </div>

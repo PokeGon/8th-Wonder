@@ -13,6 +13,8 @@
 <body>
 {% include 'navBar.html' %}
 
+<div class="left column">
+
 <div id='current-balance'>
     Current Balance: ${{ current_balance|floatformat:2 }}
 </div>
@@ -35,8 +37,10 @@
     <input id="dest-account"/><br>
     <input type="submit" value="Submit"> <button onclick="revealTransfer()" id="transfer-reveal">Cancel</button>
 </form>
+</div>
 
-<div>
+
+<div class="right column">
     Recent Transfers:
     {% for t in transactions %}
         <br>{{ t.name }} {{ t.amount }}

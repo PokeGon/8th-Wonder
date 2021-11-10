@@ -142,6 +142,7 @@ def createAccount(request):
             newSponsor.user = createUser
             newSponsor.companyName = ""
             newSponsor.canSponsorTournament = False
+            newSponsor.companyName = request.POST.get('companyName')
             newSponsor.save()
 
         if createUser.user_type == "3":

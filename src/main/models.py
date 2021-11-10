@@ -176,9 +176,6 @@ class Tournament(models.Model):
     numOfHoles = models.IntegerField(default=12)
     holes = models.ManyToManyField('Hole')
 
-    def getHoles(self):
-        pass
-
     def __str__(self):
         return str(self.name) + " tournament - " + str(self.date)
 
@@ -188,7 +185,7 @@ class Hole(models.Model):
     par = models.SmallIntegerField(default=3)
 
     def __str__(self):
-        return "Hole " + str(self.holeNumber)
+        return str(self.holeNumber)
 
 
 class Score(models.Model):

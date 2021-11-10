@@ -11,24 +11,30 @@ from .forms import *
 
 
 def tournament(request, tournamentName):
-    tournament = Tournament.objects.get(name=tournamentName)
-    score = Score.objects.filter(tournament=tournament, player=request.user.player, hole=request.POST.get('hole'))
+    tourney = Tournament.objects.get(name=tournamentName)
     if request.method == "POST":
+        hole = Hole.objects.get(holeNumber=request.POST.get('hole'))
+        score = Score.objects.get(tournament=tourney, player=request.user.player, hole=hole)
         if request.POST.get('join'):
-            request.user.player.joinTournament(tournament)
-        if request.POST.get('add_1'):
-            
-        if request.POST.get('add_2'):
-            pass
-        if request.POST.get('add_3'):
-            pass
-        if request.POST.get('add_4'):
-            pass
-        if request.POST.get('add_5'):
-            pass
-    score_list = Score.objects.filter(tournament=tournament, player=request.user.player)
-    tplayer = tournament.players.filter(user=request.user)
-    context = {"tournament": tournament, "tplayer": tplayer, "holes": tournament.holes.filter(),
+            request.user.player.joinTournament(tourney)
+        elif request.POST.get('add_1'):
+            score.score = 1
+            score.save()
+        elif request.POST.get('add_2'):
+            score.score = 2
+            score.save()
+        elif request.POST.get('add_3'):
+            score.score = 3
+            score.save()
+        elif request.POST.get('add_4'):
+            score.score = 4
+            score.save()
+        elif request.POST.get('add_5'):
+            score.score = 5
+            score.save()
+    score_list = Score.objects.filter(tournament=tourney, player=request.user.player)
+    tplayer = tourney.players.filter(user=request.user)
+    context = {"tournament": tourney, "tplayer": tplayer, "holes": tourney.holes.filter(),
                "score_list": score_list}
     return render(request, 'tournament.html', context)
 

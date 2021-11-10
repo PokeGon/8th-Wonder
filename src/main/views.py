@@ -114,7 +114,7 @@ def createAccount(request):
     if request.method == "POST":
         for u in User.objects.all():
             if u.username == request.POST.get('username'):
-                return HttpResponse("Error, There is already a User with this name")
+                return render(request, 'accountCreation.html', {'error_message' : "Username taken, Please choose another"})
         newUser = User()
         newUser.username = request.POST.get('username')
         newUser.first_name = request.POST.get('firstName')

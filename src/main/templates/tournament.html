@@ -14,54 +14,53 @@
 {% include 'navBar.html' %}
 
 <div class="left column">
-    <h2>Play in tournament {{ name }}</h2>
-    <button>Pay $20</button>
-</div>
-<p>&nbsp</p>
-<div class="left column">
-    <h2>Current Hole</h2>
-    <p>2</p>
-</div>
-<div class="left column">
-    <h2>Enter Score:</h2>
-    <button>-2</button>
-    <button>-1</button>
-    <button>+0</button>
-    <button>+1</button>
-    <button>+2</button>
+    <h2>Tournament: {{ tournament.name }}</h2>
+    {% if tplayer %}
+        <form action="" method="post"> {% csrf_token %}
+            <h2>Current Hole</h2>
+            <select name="hole" id="holes">
+                {% for i in holes %}
+                    <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+            <h2>Enter Score:</h2>
+            <input type="submit" name="add_1" value="+1"/>
+            <input type="submit" name="add_2" value="+2"/>
+            <input type="submit" name="add_3" value="+3"/>
+            <input type="submit" name="add_4" value="+4"/>
+            <input type="submit" name="add_5" value="+5"/>
+        </form>
+    {% else %}
+        <form action="" method="post"> {% csrf_token %}
+            <input type="submit" name="join" value="Join Tournament"/>
+        </form>
+    {% endif %}
+
+
 </div>
 <div class="right column">
-    Current Total:
-    <p>16</p>
-</div>
-<div class="right column">
-<table border="black">
-    <tr>
-        <td>Hole</td>
-        <td>Par</td>
-        <td>Score</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>3</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>2</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>4</td>
-        <td>+2</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>4</td>
-        <td>+1</td>
-    </tr>
-</table>
+    {% if tplayer %}
+        Current Total:
+        <p>16</p>
+        <table border="black">
+            <tr>
+                <td>Hole</td>
+                <td>Par</td>
+                <td>Score</td>
+            </tr>
+            {% for hole in holes %}
+                <tr>
+                    <td>{{hole}}</td>
+                    <td>{{hole.par}}</td>
+                    {% for s in score_list %}
+                    {% if s.hole == hole %}
+                    <td>{{s.score}}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 </div>
 
 </body>

@@ -12,21 +12,18 @@
 </head>
 <body>
 
-{% include 'navBar.html' %}
 
 
-
-<div class="left column">
         <h2>Sponsor New Tournament</h2>
         <p>Check for available day.</p>
         <form action="{% url 'sponsor' %}" method="post"> {% csrf_token %}
             <label for="date"></label><input type="date" name="date" id="date" value="">
+            <br>
             <label for="tournamentName">Tournament Name: </label><input id="tournamentName" name="tournamentName" type="text" value="">
+            <br>
             <input type="submit" value="Sponsor Tournament - $500"/>
         </form>
-</div>
 
-<div  class="right column">
     <p></p>
     <a href="{% url 'events' %}"><input type="submit" value="See Events"></a>
-</div>
+

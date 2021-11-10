@@ -24,7 +24,8 @@
     <h2>Create a new Account</h2>
 
     <form action ="{% url 'createAccount' %}" method="post"> {% csrf_token %}
-        <label for = "email">Email </label><input required = "required" type="email" name="email" id="email" value="">
+        <div>
+        <label for = "email">Email </label><input required = "required" type="email" name="email" id="email" value=""> 
         <br>
         <label for = "username">Username </label><input type="text" required = "required"  name="username" id="username" value="">
         <br>
@@ -46,15 +47,10 @@
         </select>
 
         <br>
-        <br>
-
+        </div>
         <button type="submit" value="Create New Account" class="accountButton">Create Account</button>
     </form>
-
     </div>
-
-<p></p>
-
     <br> <br>
     <a href="{% url 'account' %}"><input type="submit" value="Already Have an Account?" class="accountButton"></a>
 

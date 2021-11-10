@@ -11,7 +11,32 @@ from .forms import *
 
 
 def tournament(request, tournamentName):
-    return render(request, 'tournament.html')
+    tourney = Tournament.objects.get(name=tournamentName)
+    if request.method == "POST":
+        hole = Hole.objects.get(holeNumber=request.POST.get('hole'))
+        score = Score.objects.get(tournament=tourney, player=request.user.player, hole=hole)
+        if request.POST.get('join'):
+            request.user.player.joinTournament(tourney)
+        elif request.POST.get('add_1'):
+            score.score = 1
+            score.save()
+        elif request.POST.get('add_2'):
+            score.score = 2
+            score.save()
+        elif request.POST.get('add_3'):
+            score.score = 3
+            score.save()
+        elif request.POST.get('add_4'):
+            score.score = 4
+            score.save()
+        elif request.POST.get('add_5'):
+            score.score = 5
+            score.save()
+    score_list = Score.objects.filter(tournament=tourney, player=request.user.player)
+    tplayer = tourney.players.filter(user=request.user)
+    context = {"tournament": tourney, "tplayer": tplayer, "holes": tourney.holes.filter(),
+               "score_list": score_list}
+    return render(request, 'tournament.html', context)
 
 
 def drinks(request):
@@ -63,6 +88,13 @@ def account(request):
 
 
 def bank(request):
+    if request.method == 'POST':
+        dest = User.objects.get(name=request.destAccount)
+        Transaction.objects.create_transaction(request.transAmount, dest)
+
+        dest.balance += request.transAmount
+        return HttpResponse("sent money to " + dest)
+
     context = {}
     context['current_balance'] = request.user.balance / 100 if not request.user.is_anonymous else 0.00
     if not request.user.is_anonymous:

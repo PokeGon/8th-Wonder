@@ -111,54 +111,55 @@ def orderConfirmation(request):
 
 
 def createAccount(request):
-    for u in User.objects.all():
-        if u.username == request.POST.get('username'):
-            return HttpResponse("Error, There is already a User with this name")
-    newUser = User()
-    newUser.username = request.POST.get('username')
-    newUser.first_name = request.POST.get('firstName')
-    newUser.last_name = request.POST.get('lastName')
-    newUser.email = request.POST.get('email')
-    newUser.password = request.POST.get('password')
-    newUser.phone_number = request.POST.get('phoneNumber')
-    newUser.user_type = request.POST.get('userType')
-    createUser = User.objects.create_user(newUser.username, newUser.email, newUser.password)
-    createUser.first_name = newUser.first_name
-    createUser.last_name = newUser.last_name
-    createUser.phone_number = newUser.phone_number
-    createUser.user_type = newUser.user_type
-    createUser.save()
+    if request.method == "POST":
+        for u in User.objects.all():
+            if u.username == request.POST.get('username'):
+                return HttpResponse("Error, There is already a User with this name")
+        newUser = User()
+        newUser.username = request.POST.get('username')
+        newUser.first_name = request.POST.get('firstName')
+        newUser.last_name = request.POST.get('lastName')
+        newUser.email = request.POST.get('email')
+        newUser.password = request.POST.get('password')
+        newUser.phone_number = request.POST.get('phoneNumber')
+        newUser.user_type = request.POST.get('userType')
+        createUser = User.objects.create_user(newUser.username, newUser.email, newUser.password)
+        createUser.first_name = newUser.first_name
+        createUser.last_name = newUser.last_name
+        createUser.phone_number = newUser.phone_number
+        createUser.user_type = newUser.user_type
+        createUser.save()
 
-    if createUser.user_type == "1":
-        newPlayer = Player()
-        newPlayer.user = createUser
-        newPlayer.hole = 0
-        newPlayer.currentHole = 0
-        newPlayer.save()
+        if createUser.user_type == "1":
+            newPlayer = Player()
+            newPlayer.user = createUser
+            newPlayer.hole = 0
+            newPlayer.currentHole = 0
+            newPlayer.save()
 
-    if createUser.user_type == "2":
-        newSponsor = Sponsor()
-        newSponsor.user = createUser
-        newSponsor.companyName = ""
-        newSponsor.canSponsorTournament = False
-        newSponsor.save()
+        if createUser.user_type == "2":
+            newSponsor = Sponsor()
+            newSponsor.user = createUser
+            newSponsor.companyName = ""
+            newSponsor.canSponsorTournament = False
+            newSponsor.save()
 
-    if createUser.user_type == "3":
-        newDrinkmeister = Drinkmeister()
-        newDrinkmeister.user = createUser
-        newDrinkmeister.isAllowedToServeDrinks = False
-        newDrinkmeister.save()
+        if createUser.user_type == "3":
+            newDrinkmeister = Drinkmeister()
+            newDrinkmeister.user = createUser
+            newDrinkmeister.isAllowedToServeDrinks = False
+            newDrinkmeister.save()
 
-    if createUser.user_type == "4":
-        newManger = Manager()
-        newManger.user = createUser
-        newManger.yearsWorked = 0
-        newManger.mostMoneyHeld = 0
-        newManger.drinksSold = 0
-        newManger.totalTournamentsMade = 0
-        newManger.save()
+        if createUser.user_type == "4":
+            newManger = Manager()
+            newManger.user = createUser
+            newManger.yearsWorked = 0
+            newManger.mostMoneyHeld = 0
+            newManger.drinksSold = 0
+            newManger.totalTournamentsMade = 0
+            newManger.save()
 
-    return HttpResponseRedirect('login')
+        return HttpResponseRedirect('login')
 
 
 def sponsor(request):

@@ -83,3 +83,34 @@ class SponsorTestCase(TestCase):
         self.assertEqual(sponsor.user.user_type, 4)
         self.assertEqual(sponsor.companyName, "Coke")
         self.assertEqual(sponsor.canSponsorTournament, False)
+
+class DrinksTest(TestCase):
+    def setUp(self):
+        models.Drink.objects.create(name = "Nuka Cola", price = 12, instructions = "Add coke to a glass and serve")
+
+    def test_drink(self):
+        drink = models.Drink.objects.get(name="Nuka Cola")
+        self.assertEqual(drink.name, "Nuka Cola")
+        self.assertEqual(drink.price, 12)
+        self.assertEqual(drink.instructions, "Add coke to a glass and serve")
+
+class OrderTest(TestCase):
+    def setUp(self):
+        user = models.User.objects.create_user(username="admin", id=0,
+                                               email="admin@admin.com",
+                                               password="asdf",
+                                               user_type="4",
+                                               phone_number="1234567899")
+
+        drink = models.Drink.objects.create(name = "Nuka Cola", price = 12, instructions = "Add coke to a glass and serve")
+
+        models.Order.objects.create(drink = drink, specificInstructions = "None", user = user, location = 3)
+
+    def test_order(self):
+        order = models.Order.objects.get(user=0)
+        self.assertEqual(order.user.username, "admin")
+        self.assertEqual(order.user.user_type, 4)
+        self.assertEqual(order.drink.name , "Nuka Cola")
+        self.assertEqual(order.drink , models.Drink.objects.get(name="Nuka Cola"))
+        self.assertEqual(order.specificInstructions, "None")
+        self.assertEqual(order.location, 3)

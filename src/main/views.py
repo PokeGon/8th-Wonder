@@ -11,7 +11,26 @@ from .forms import *
 
 
 def tournament(request, tournamentName):
-    return render(request, 'tournament.html')
+    tournament = Tournament.objects.get(name=tournamentName)
+    score = Score.objects.filter(tournament=tournament, player=request.user.player, hole=request.POST.get('hole'))
+    if request.method == "POST":
+        if request.POST.get('join'):
+            request.user.player.joinTournament(tournament)
+        if request.POST.get('add_1'):
+            
+        if request.POST.get('add_2'):
+            pass
+        if request.POST.get('add_3'):
+            pass
+        if request.POST.get('add_4'):
+            pass
+        if request.POST.get('add_5'):
+            pass
+    score_list = Score.objects.filter(tournament=tournament, player=request.user.player)
+    tplayer = tournament.players.filter(user=request.user)
+    context = {"tournament": tournament, "tplayer": tplayer, "holes": tournament.holes.filter(),
+               "score_list": score_list}
+    return render(request, 'tournament.html', context)
 
 
 def drinks(request):
@@ -63,6 +82,13 @@ def account(request):
 
 
 def bank(request):
+    if request.method == 'POST':
+        dest = User.objects.get(name=request.destAccount)
+        Transaction.objects.create_transaction(request.transAmount, dest)
+
+        dest.balance += request.transAmount
+        return HttpResponse("sent money to " + dest)
+
     context = {}
     context['current_balance'] = request.user.balance / 100 if not request.user.is_anonymous else 0.00
     if not request.user.is_anonymous:

@@ -16,12 +16,12 @@
 
 
 <div class="column left">
-    <h1> Upcoming Tournaments</h1>
+    <h1 style="text-align:center;"> Upcoming Tournaments</h1>
 {% if tournaments_list %}
 <div>
     {% for t in tournaments_list %}
     <a href="{% url 'tournament' t.name %}">
-        <button>
+        <button class="eventButton">
             <h2>{{t.name}}</h2>
             <h3>{{t.date}}: 3pm to 8pm</h3>
         </button>

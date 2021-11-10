@@ -25,19 +25,20 @@
             {% endfor %}
         {% endif %}
     </select>
-        <a><input type="submit" value="Deliver and Finish Order"></a>
+        <a><input type="submit" value="Deliver and Finish Order" class="orderButton"></a>
     </form>
 
     {% if orderList %}
     {% for order in orderList %}
-    <p></p>
-    <h3 id="{{ order.user }}">Order From: {{ order.user }}</h3>
-    <ul>
-        <li>Drink: {{ order.drink.name }}</li>
-        <li>Instructions: {{ order.specificInstructions }}</li>
-        <li>Time Ordered: {{ order.timeOrdered }}</li>
-        <li>Deliver to Hole: {{ order.location }}</li>
-    </ul>
+    <div class="orderdiv">
+        <p></p>
+        <div id="{{ order.user }}" class="orderButton">Order From: {{ order.user }} </div>
+        <div class="orderButton">Drink: {{ order.drink.name }}</div>
+        <div class="orderButton">Instructions: {{ order.specificInstructions }}</div>
+        <div class="orderButton">Time Ordered: {{ order.timeOrdered }}</div>
+        <div class="orderButton">Deliver to Hole: {{ order.location }}</div>
+    </div>
+
 
     {% endfor %}
     {% else %}

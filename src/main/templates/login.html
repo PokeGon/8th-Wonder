@@ -16,17 +16,17 @@
 
 <div class="left column">
     <h2>Please Sign in or Create Account</h2>
-    <form method ="post">
+    <form method ="post" class="accountButton">
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button type ="submit">Login</button>
+        <button type ="submit" class="accountButton">Login</button>
     </form>
     <p></p>
 
     <p></p>
 
-    <a href="{% url 'accountCreation' %}"><input type="submit" value="Create New Account"></a>
+    <a href="{% url 'accountCreation' %}"><input type="submit" value="Create New Account" class="accountButton"></a>
 
 </div>
 

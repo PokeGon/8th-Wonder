@@ -14,7 +14,7 @@
 
 {% include 'navBar.html' %}
 
-<div class="left column">
+<div class="leftcolumn">
     <h2>Create a new Account</h2>
     <form action ="{% url 'createAccount' %}" method="post"> {% csrf_token %}
         <label for = "email">Email</label><input type="email" name="email" id="email" value="">
@@ -37,15 +37,13 @@
             <option value="3">Drinkmeister</option>
         </select>
         <br>
-        <button type="submit" value="Create New Account">Create Account</button>
     </form>
-    <p></p>
-
-    <br> <br>
-    <a href="{% url 'account' %}"><input type="submit" value="Already Have an Account?"></a>
 
 </div>
-
+<p></p>
+    <button type="submit" value="Create New Account" class="accountButton">Create Account</button>
+    <br> <br>
+    <a href="{% url 'account' %}"><input type="submit" value="Already Have an Account?" class="accountButton"></a>
 
 </body>
 </html>

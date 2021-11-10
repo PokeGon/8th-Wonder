@@ -39,6 +39,17 @@ body {
     margin-left:10%;
     text-align: center;
 }
+.bank {
+    border-style: solid;
+    border-color: #FFC9B9;
+    background: #FFC9B9;
+    text-decoration: none;
+    font-size: 32px;
+    width: 100%;
+    margin-top:2%;
+    margin-left:10%;
+    text-align: center;
+}
 .signoutDiv {
     border-style: solid;
     text-decoration: none;

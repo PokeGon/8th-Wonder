@@ -11,44 +11,46 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-{% include 'navBar.html' %}
+    {% include 'navBar.html' %}
 
-<div class="left column">
+    <div class="column left">
 
-<div id='current-balance'>
-    Current Balance: ${{ current_balance|floatformat:2 }}
-</div>
+        <div class="bank">
+            Current Balance: ${{ current_balance|floatformat:2 }}
+            <br>
+            <button onclick="revealTransfer()" class="accountButton">Transfer</button>
+        </div>
 
-<script>
-    function revealTransfer() {
-        let x =document.getElementById("transfer-reveal")
-        x.style.display = x.style.display === "none" ? "block" : "none";
-        x = document.getElementById("transfer-form")
-        x.style.display = x.style.display === "none" ? "block" : "none";
-    } 
-</script>
-
-<button onclick="revealTransfer()" id="transfer-reveal">Transfer</button>
-
-<form id="transfer-form" style="display:none">
-    Transfer Amount<br>
-    $<input id="transAmount" type="number" min="0" step="0.01" /><br>
-    Destination Account<br>
-    <input id="destAccount"/><br>
-    <input type="submit" value="Submit"> <button onclick="revealTransfer()" id="transfer-reveal">Cancel</button>
-</form>
-</div>
+        <script>
+            function revealTransfer() {
+                let x =document.getElementById("transfer-reveal")
+                x.style.display = x.style.display === "none" ? "block" : "none";
+                x = document.getElementById("transfer-form")
+                x.style.display = x.style.display === "none" ? "block" : "none";
+            }
+        </script>
 
 
-<div class="right column">
-    Recent Transfers:
-    {% for t in transactions %}
-        <br>{{ t.name }} {{ t.amount }}
-    {% empty %}
-        <br>{{ t.name }} {{ t.amount }}
-        No Transfers
-    {% endfor %}
-</div>
+
+        <form id="transfer-form" style="display:none">
+            Transfer Amount<br>
+            $<input id="transAmount" type="number" min="0" step="0.01" /><br>
+            Destination Account<br>
+            <input id="destAccount"/><br>
+            <input type="submit" value="Submit"> <button onclick="revealTransfer()" id="transfer-reveal">Cancel</button>
+        </form>
+    </div>
+
+
+    <div class="right column">
+        Recent Transfers:
+        {% for t in transactions %}
+            <br>{{ t.name }} {{ t.amount }}
+        {% empty %}
+            <br>{{ t.name }} {{ t.amount }}
+            No Transfers
+        {% endfor %}
+    </div>
 
 
 </body>

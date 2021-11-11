@@ -48,14 +48,14 @@ def drinks(request):
         newOrder.location = request.POST.get('location')
         newOrder.specificInstructions = request.POST.get('instructions')
         newOrder.save()
-        return render(request, 'orderConfirmation.html')
+        return HttpResponseRedirect('../orderConfirmation')
 
     else:
         if request.user.is_anonymous:
             return HttpResponseRedirect('../login')
         orders = Order.objects.all()
         drinkList = Drink.objects.all()
-        user = request.user.username
+        user = request.user
         return render(request, "drinks.html", {"orders": orders, "drinkList": drinkList, "user": user})
 
 
@@ -84,6 +84,8 @@ def homeRedirect(request):
 
 
 def account(request):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect('../login')
     return render(request, "account.html")
 
 
@@ -131,8 +133,8 @@ def drinksEdit(request):
         return HttpResponseRedirect('#')
 
     else:
-        if request.user.is_anonymous:
-            return HttpResponseRedirect('../login')
+        if request.user.user_type != 4:
+            return HttpResponseRedirect('../drinks')
         drinkList = Drink.objects.all()
         addDrinkForm = addDrink()
         return render(request, 'drinkEdit.html', {'addDrinkForm': addDrinkForm, 'drinkList': drinkList})
@@ -213,7 +215,7 @@ def sponsor(request):
         newTournament.save()
         return HttpResponse("Success for " + str(request.user.sponsor))
     else:
-        if request.user.is_anonymous:
+        if request.user.is_anonymous or request.user.user_type != 2 and request.user.user_type != 4:
             return HttpResponseRedirect('../login')
         tournaments_list = Tournament.objects.all()
         context = {'tournaments_list': tournaments_list}
@@ -232,10 +234,11 @@ def drinkMeister(request):
         order.delete()
         return HttpResponseRedirect('#')
     else:
-        if request.user.is_anonymous:
+        if request.user.is_anonymous or request.user.user_type != 3 and request.user.user_type != 4:
             return HttpResponseRedirect('../login')
         orderList = Order.objects.filter(served=False)
-        return render(request, 'drinkMeister.html', {'orderList': orderList})
+        drinkList = Drink.objects.all()
+        return render(request, 'drinkMeister.html', {'orderList': orderList, 'drinkList': drinkList})
 
 
 def events(request):
@@ -246,6 +249,8 @@ def events(request):
 
 
 def manager(request):
+    if request.user.is_anonymous or request.user.user_type != 4:
+        return HttpResponseRedirect('../login')
     return render(request, "manager.html")
 
 

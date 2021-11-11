@@ -16,7 +16,7 @@
 
 <div class="left column">
     <h2>Please Sign in or Create Account</h2>
-    <form method ="post" class="accountButton">
+    <form method ="post">
         {% csrf_token %}
         {{ form.as_p }}
 

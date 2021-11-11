@@ -21,9 +21,9 @@
   <h3>Add New Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">
     {% csrf_token %}
-    {{ addDrinkForm }}
-    <input type="submit" value="Confirm">
-  </form>
+    {{ addDrinkForm.as_p }}
+    <br><input type="submit" value="Confirm" class="accountButton">
+  </form><br>
 
   <h3>Delete Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
@@ -34,8 +34,8 @@
         {% endfor %}
       {% endif %}
     </select>
-    <input type="submit" value="Confirm">
-  </form>
+    <br><br><input type="submit" value="Confirm" class="accountButton">
+  </form><br>
 
   <h3>Edit Current Drink</h3>
   <form action="{% url 'editDrinks' %}" method="POST">{% csrf_token %}
@@ -46,30 +46,29 @@
         {% endfor %}
       {% endif %}
     </select>
-    <label for="name">New Name: </label><input id="name" type="text" name="name" value="" required>
-    <label for="price">New Price: </label><input id="price" type="text" name="price" value="" required>
-    <lable for="instructions">New Instructions: </lable><input id="instructions" type="text" name="instructions" value="" required>
-    <input type="submit" value="Confirm">
+    <br><br><label for="name">New Name: </label><input id="name" type="text" name="name" value="" required>
+    <br><br><label for="price">New Price: </label><input id="price" type="text" name="price" value="" required>
+    <br><br><lable for="instructions">New Instructions: </lable><input id="instructions" type="text" name="instructions" value="" required>
+    <br><br><input type="submit" value="Confirm" class="accountButton">
   </form>
 
 </div>
 
 
-<div class="right column">
-
-  <h3>Available Drinks</h3>
-
+    <div class="column right">
+    <h2>Available Drinks</h2>
     {% if drinkList %}
     {% for drink in drinkList %}
-      <h4>{{ drink.name }}</h4>
-      <p> - {{ drink.price }}</p>
+      <div class="orderButton" style="width: 80%;">
+      <h3>{{ drink.name }}</h3>
+      <p> - ${{ drink.price }}</p>
       <p> - {{ drink.instructions }}</p>
+      </div>
     {% endfor %}
     {% else %}
       <p>No Drinks Yet Created</p>
     {% endif %}
-
-</div>
+    </div>
 
 </body>
 </html>

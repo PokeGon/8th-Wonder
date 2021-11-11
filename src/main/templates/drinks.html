@@ -26,14 +26,17 @@
               <option value="{{ drink.name }}">{{ drink.name }}</option>
             {% endfor %}
         </select>
+          <br><br>
           <lable for="location">Delivery Location: </lable><input id="location" type="text" name="location" value="" required>
+          <br><br>
           <lable for="instructions">Specific Instructions: </lable><input id="instructions" type="text" name="instructions" value="">
         <input type="submit" value="Confirm Order">
       </form>
 
     {% if orders != null %}
     {% for order in orders %}
-        {% if order.user.username == user %}
+        {% if order.user.username == user.username %}
+            <div style="background: #FFC9B9;">
             <h3>Waiting for Order: </h3>
             <ul>
                 <li>Drink: {{ order.drink.name }}</li>
@@ -41,24 +44,27 @@
                 <li>Time Ordered: {{ order.timeOrdered }}</li>
                 <li>Deliver to Hole: {{ order.location }}</li>
             </ul>
+            </div>
         {% endif %}
     {% endfor %}
     {% endif %}
 
 </div>
 
-<div class="column right">
+    <div class="column right">
     <h2>Available Drinks</h2>
     {% if drinkList %}
     {% for drink in drinkList %}
+      <div class="orderButton" style="width: 80%;">
       <h3>{{ drink.name }}</h3>
       <p> - ${{ drink.price }}</p>
       <p> - {{ drink.instructions }}</p>
+      </div>
     {% endfor %}
     {% else %}
       <p>No Drinks Yet Created</p>
     {% endif %}
-</div>
+    </div>
 
   <!--
   <h2>Menu</h2>

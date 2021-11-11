@@ -20,7 +20,7 @@ body {
     border-color: #D68C45;
     background: #D68C45;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 24px;
     color: black;
     width: 80%;
     margin-top:2%;
@@ -73,14 +73,14 @@ body {
 }
 .accountButton {
     border-style: solid;
-    border-color: #D68C45;
-    background: #D68C45;
+    border-color: #FFC9B9;
+    background: #FFC9B9;
     text-decoration: none;
     font-size: 32px;
     color: black;
     width: 40%;
     margin-top:0.5%;
-    margin-left:10%;
+    margin-left:5%;
     text-align: center;
 }
 .navbutton1 {
@@ -90,10 +90,11 @@ body {
     text-decoration: none;
     font-size: 32px;
     color: black;
-    width: 19.75%;
+    width: 20%;
     display: inline-block;
     border: 0;
     text-align: center;
+    margin-right: -4px;
 }
 
 .navbutton2 {
@@ -103,10 +104,11 @@ body {
     text-decoration: none;
     font-size: 32px;
     color: black;
-    width: 19.75%;
+    width: 20%;
     display: inline-block;
     border: 0;
     text-align: center;
+    margin-right: -4px;
 }
 
 .pagetitle {
@@ -124,10 +126,24 @@ body {
 
 
 .left {
-    width: 60%;
+    width: 40%;
+    border-style: solid;
+    border-color: #D68C45;
+    background: #D68C45;
+    font-size: 16px;
+    color: black;
+    margin-top:2.5%;
+    margin-left:10%;
 }
 
 .right {
     width: 35%;
+    border-style: solid;
+    border-color: #FFC9B9;
+    background: #FFC9B9;
+    font-size: 16px;
+    color: black;
+    margin-top:2.5%;
+    margin-left:10%;
     text-align: center;
 }

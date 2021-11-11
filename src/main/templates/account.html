@@ -44,6 +44,12 @@
     </div>
 
     <div class="right column">
+        <a href="{% url 'bank' %}">
+        <button onclick="location.href='bank'" class="navButton1" style="width: 80%;">
+        <h2>Add Money to Account</h2>
+        </button>
+        </a>
+
         {% if user.user_type == 4 %}
         <h4>Other options</h4>
         {% include "manager.html" %}

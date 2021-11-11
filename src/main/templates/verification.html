@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
+{% include 'navBar.html' %}
+
+<div class="left column">
 <h2>Sponsors</h2>
 {% if sponsors_list %}
     <ul>
@@ -32,6 +35,6 @@
         {% endfor %}
     </ul>
 {% endif %}
-
+</div>
 </body>
 </html>

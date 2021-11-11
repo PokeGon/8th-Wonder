@@ -14,10 +14,10 @@
 
 {% include 'navBar.html' %}
 
-<h1>Current Orders</h1>
+
 <div class="left column" id="#orderNumber">
 
-    <form action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
+    <form class="right" style="width: 80%" action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
         <select id="order" name="order">
         {% if orderList %}
             {% for order in orderList %}
@@ -27,6 +27,8 @@
     </select>
         <a><input type="submit" value="Deliver and Finish Order" class="orderButton"></a>
     </form>
+
+    <h1>Current Orders</h1>
 
     {% if orderList %}
     {% for order in orderList %}
@@ -45,8 +47,23 @@
         <p></p>
         <h3>No Current Orders</h3>
     {% endif %}
-
-
 </div>
+
+
+    <div class="column right">
+    <h2>Available Drinks</h2>
+    {% if drinkList %}
+    {% for drink in drinkList %}
+      <div class="orderButton" style="width: 80%;">
+      <h3>{{ drink.name }}</h3>
+      <p> - ${{ drink.price }}</p>
+      <p> - {{ drink.instructions }}</p>
+      </div>
+    {% endfor %}
+    {% else %}
+      <p>No Drinks Yet Created</p>
+    {% endif %}
+    </div>
+
 </body>
 </html>

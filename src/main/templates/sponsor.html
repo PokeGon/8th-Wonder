@@ -17,13 +17,13 @@
         <h2 style="margin-top: 0%;">Sponsor New Tournament</h2>
         <p>Check for available day.</p>
         <form action="{% url 'sponsor' %}" method="post" > {% csrf_token %}
-            <label for="date"></label><input type="date" name="date" id="date" value="">
+            <label for="date"></label><input type="date" name="date" id="date" value="" style="font-size: 1vw;">
             <br>
-            <label for="tournamentName">Tournament Name: </label><input id="tournamentName" name="tournamentName" type="text" value="">
+            <label for="tournamentName">Tournament Name: </label><input id="tournamentName" name="tournamentName" type="text" value="" style="font-size: 1vw;">
             <br>
-            <input type="submit" value="Sponsor Tournament - $500" class="navButton1" style="width: 80%;"/>
+            <input type="submit" value="Sponsor Tournament - $500" class="navButton1" style="width: 80%; font-size: 1vw;"/>
         </form>
 
     <p></p>
-    <a href="{% url 'events' %}"><input type="submit" value="See Events" class="navButton1" style="width: 80%;"></a>
+    <a href="{% url 'events' %}"><input type="submit" value="See Events" class="navButton1" style="width: 80%; font-size: 1vw;"></a>
 

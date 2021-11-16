@@ -18,7 +18,7 @@
         <div class="bank">
             Current Balance: ${{ current_balance|floatformat:2 }}
             <br>
-            <button onclick="revealTransfer()" class="accountButton">Transfer</button>
+            <button onclick="revealTransfer()" class="accountButton" style="background: #D68C45;">Transfer</button>
         </div>
 
         <script>
@@ -44,7 +44,7 @@
 
     <div class="right column">
         Recent Transfers:
-        {% for t in transactions %}
+        {% for t in context.transactions %}
             <br>{{ t.name }} {{ t.amount }}
         {% empty %}
             <br>{{ t.name }} {{ t.amount }}

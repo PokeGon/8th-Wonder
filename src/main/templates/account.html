@@ -45,7 +45,7 @@
 
     <div class="right column">
         <a href="{% url 'bank' %}">
-        <button onclick="location.href='bank'" class="navButton1" style="width: 80%;">
+        <button onclick="location.href='bank'" class="navButton1" style="width: 80%; font-size: 1vw;">
         <h2>Add Money to Account</h2>
         </button>
         </a>
@@ -57,6 +57,15 @@
     {% if user.user_type == 2 %}
         <h4>Other options</h4>
         {% include "sponsor.html" %}
+    {% endif %}
+        {% if user.user_type == 3 %}
+        <h4>Other options</h4>
+        <br>
+    <a href="{% url 'drinkMeister' %}">
+        <button onclick="location.href='drinkMeister'" class="navButton1" style="width: 80%; font-size: 1vw;">
+        <h2>Serve Drinks</h2>
+        </button>
+    </a>
     {% endif %}
     </div>
 

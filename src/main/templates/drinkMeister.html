@@ -18,7 +18,7 @@
 <div class="left column" id="#orderNumber">
 
     <form class="right" style="width: 80%" action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
-        <select id="order" name="order">
+        <select id="order" name="order" style="font-size: 1vw;">
         {% if orderList %}
             {% for order in orderList %}
                 <option value="{{ order.id }}">{{ order.user }} - {{ order.drink.name }}</option>

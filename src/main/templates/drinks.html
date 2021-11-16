@@ -21,16 +21,17 @@
 
     <h3>New Order: </h3>
       <form action="{% url 'drinks' %}" method="POST">{% csrf_token %}
-        <label for="newDrink">Drink: </label><select id="newDrink" name="newDrink">
+        <label for="newDrink">Drink: </label><select id="newDrink" name="newDrink" style="font-size: 1vw;">
             {% for drink in drinkList %}
               <option value="{{ drink.name }}">{{ drink.name }}</option>
             {% endfor %}
         </select>
           <br><br>
-          <lable for="location">Delivery Location: </lable><input id="location" type="text" name="location" value="" required>
+          <lable for="location">Delivery Location: </lable><input id="location" type="text" name="location"  style="font-size: 1vw;" value="" required>
           <br><br>
-          <lable for="instructions">Specific Instructions: </lable><input id="instructions" type="text" name="instructions" value="">
-        <input type="submit" value="Confirm Order">
+          <lable for="instructions">Specific Instructions: </lable><input id="instructions" type="text" name="instructions" value="" style="font-size: 1vw;">
+          <br><br>
+        <input type="submit" value="Confirm Order" class="accountButton" style="font-size: 1vw; margin-left:20%;">
       </form>
 
     {% if orders != null %}

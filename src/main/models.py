@@ -159,7 +159,7 @@ class TransactionManager(models.Manager):
 class Transaction(models.Model):
     date = models.DateField(auto_now=True)
     from_account = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    amount = models.FloatField()
     account = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='user')
     objects = TransactionManager()
 

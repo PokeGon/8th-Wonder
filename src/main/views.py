@@ -79,7 +79,7 @@ def home(request):
     return render(request, "index.html")
 
 
-def homeRedirect(request):
+def homeRedirect():
     return redirect('home')
 
 
@@ -167,8 +167,7 @@ def createAccount(request):
         if createUser.user_type == "1":
             newPlayer = Player()
             newPlayer.user = createUser
-            newPlayer.hole = 0
-            newPlayer.currentHole = 0
+
             newPlayer.save()
 
         if createUser.user_type == "2":

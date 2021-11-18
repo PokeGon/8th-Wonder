@@ -27,11 +27,18 @@
 
   
 ## Build instructions
-	To clone the repository in git bash
-
+	Clone the repository in git bash
 	$ git clone https://github.com/PokeGon/8th-Wonder.git
+    
+    Inside cloned repository "src/" use the command
+    $ python manage.py runsever
 
-	We will host the web application on AWS to be remote accessible. 
+    The git window will give you a location to explore the site like the example below
+    $ http://127.0.0.1:8000/
+
+    Put that address into your search bar and run and you should be on the site!
+
+	Before the end of the project we will host the web application on AWS to be remote accessible. 
 
 ## Unit testing instructions
 	Unit tests will cover all use cases laid out in the use case diagrams. They will be found in a designated 

@@ -35,7 +35,14 @@
 
 
     <div class="column right">
-        <h2>Top Scores</h2>
+        {% if top_score_list_last_tourney %}
+            <h2>Top Scores from Latest Tournament</h2>
+            {% for score in top_score_list_last_tourney %}
+                <p>{{score.player.user.first_name}} {{score.player.user.last_name}}: {{score.score}}/{{score.tournament.numOfHoles}}</p>
+            {% endfor %}
+        {% else %}
+            <h2>No Recent Tournaments</h2>
+        {% endif %}
 
     </div>
 </body>

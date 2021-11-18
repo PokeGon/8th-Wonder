@@ -22,7 +22,7 @@
             <b>Phone Number:</b> {{ user.phone_number }} <br>
             <b>Email:</b> {{ user.email }} <br>
             <b>Date Joined:</b> {{ user.date_joined }} <br>
-            <b>Account Balance:</b> ${{ user.balance|floatformat:2 }} <br>
+            <b>Account Balance:</b> ${{ balance|floatformat:2 }} <br>
             {% if user.user_type == 4 %}
             <h4>Manager Info</h4>
                 <b>Years worked:</b> {{ user.manager.yearsWorked }} <br>

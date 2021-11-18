@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
@@ -11,7 +11,9 @@ from .forms import *
 
 
 def tournament(request, tournamentName):
-    if request.user.is_anonymous or request.user.user_type != 4:
+    if request.user.user_type == 4 or request.user.user_type == 2:
+        ...
+    elif request.user.user_type == 1:
         tourney = Tournament.objects.get(name=tournamentName)
         nextHole = 1
         if request.method == "POST":
@@ -42,7 +44,9 @@ def tournament(request, tournamentName):
         tplayer = tourney.players.filter(user=request.user)
         context = {"tournament": tourney, "tplayer": tplayer, "holes": tourney.holes.filter(),
                    "score_list": score_list, "next_hole": nextHole, "total": total}
-        print(context)
+        return render(request, 'tournament.html', context)
+    else:
+        context = {}
         return render(request, 'tournament.html', context)
 
 
@@ -97,10 +101,28 @@ def homeRedirect():
 
 
 def account(request):
+    if request.method == "POST" and request.user.user_type == 2:
+        if request.user.user_type != 2:
+            return HttpResponseForbidden("Only sponsors can sponsor a tournament")
+        for t in Tournament.objects.all():
+            if str(t.date) == str(request.POST.get('date')) or t.name == request.POST.get('tournamentName'):
+                # Tournaments with almost identical names can still be created
+                # including if the only difference is a space
+
+                return HttpResponseBadRequest("Tournament with the same name or date already exists")
+        newTournament = Tournament()
+        newTournament.name = request.POST.get('tournamentName')
+        newTournament.date = request.POST.get('date')
+        newTournament.sponsor = request.user.sponsor
+        newTournament.save()
+        return homeRedirect()
     if request.user.is_anonymous:
         return HttpResponseRedirect('../login')
     balance = float(request.user.balance) / 100.0
     context = {'balance': balance}
+    if request.user.user_type == 2:
+        tournaments_list = Tournament.objects.all()
+        context['tournaments_list'] = tournaments_list
     print(context)
     return render(request, "account.html", context)
 
@@ -213,31 +235,6 @@ def createAccount(request):
             newManger.save()
 
         return HttpResponseRedirect('login')
-
-
-def sponsor(request):
-    if request.method == "POST":
-        if request.user.user_type != 2:
-            return HttpResponseForbidden("Only sponsors can sponsor a tournament")
-        for t in Tournament.objects.all():
-            if str(t.date) == str(request.POST.get('date')) or t.name == request.POST.get('tournamentName'):
-                # Tournaments with almost identical names can still be created
-                # including if the only difference is a space
-                tournaments_list = Tournament.objects.all()
-                context = {'tournaments_list': tournaments_list}
-                return render(request, "sponsor.html", context)
-        newTournament = Tournament()
-        newTournament.name = request.POST.get('tournamentName')
-        newTournament.date = request.POST.get('date')
-        newTournament.sponsor = request.user.sponsor
-        newTournament.save()
-        return homeRedirect()
-    else:
-        if request.user.is_anonymous or request.user.user_type != 2 and request.user.user_type != 4:
-            return HttpResponseRedirect('../login')
-        tournaments_list = Tournament.objects.all()
-        context = {'tournaments_list': tournaments_list}
-        return render(request, "sponsor.html", context)
 
 
 def drinkMeister(request):

@@ -14,16 +14,28 @@
     {% include 'navBar.html' %}
 
     <div class="column left">
-        <div class="eventButton"><h2>Events</h2><br>Drinks are 50% off this wednesday<br>Team breaks record with perfect score
-        of 18 points in 18 holes<br>New tournament starting this weekend</div>
+        <div class="communityPosts">
+            <h2>Community Posts</h2>
+            {% if user.user_type == 4 %}
+                {% for m in manager_list %}
+                    <form action="" method="post"> {% csrf_token %}
+                        <textarea name="communityPosts" rows="7">{{m.communityPosts}}</textarea>
+                        <input type="submit" value="submit">
+                    </form>
+                {% endfor %}
+            {% else%}
+                {% for m in manager_list %}
+                    {{m.communityPosts}}
+                {% endfor %}
+            {% endif %}
+
+        </div>
     </div>
 
 
 
     <div class="column right">
         <h2>Top Scores</h2>
-        <h3>Team Alpha: 18</h3>
-        <h3>Team Beta: 20</h3>
-        <h3>Team Gamma: 21</h3>
+
     </div>
 </body>

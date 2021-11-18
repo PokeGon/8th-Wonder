@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
@@ -11,32 +11,39 @@ from .forms import *
 
 
 def tournament(request, tournamentName):
-    tourney = Tournament.objects.get(name=tournamentName)
-    if request.method == "POST":
-        hole = Hole.objects.get(holeNumber=request.POST.get('hole'))
-        score = Score.objects.get(tournament=tourney, player=request.user.player, hole=hole)
-        if request.POST.get('join'):
-            request.user.player.joinTournament(tourney)
-        elif request.POST.get('add_1'):
-            score.score = 1
-            score.save()
-        elif request.POST.get('add_2'):
-            score.score = 2
-            score.save()
-        elif request.POST.get('add_3'):
-            score.score = 3
-            score.save()
-        elif request.POST.get('add_4'):
-            score.score = 4
-            score.save()
-        elif request.POST.get('add_5'):
-            score.score = 5
-            score.save()
-    score_list = Score.objects.filter(tournament=tourney, player=request.user.player)
-    tplayer = tourney.players.filter(user=request.user)
-    context = {"tournament": tourney, "tplayer": tplayer, "holes": tourney.holes.filter(),
-               "score_list": score_list}
-    return render(request, 'tournament.html', context)
+    if request.user.is_anonymous or request.user.user_type != 4:
+        tourney = Tournament.objects.get(name=tournamentName)
+        nextHole = 1
+        if request.method == "POST":
+            hole = Hole.objects.get(holeNumber=request.POST.get('hole'))
+            nextHole = int(request.POST.get('hole')) + 1
+            score = Score.objects.get(tournament=tourney, player=request.user.player, hole=hole)
+            if request.POST.get('join'):
+                request.user.player.joinTournament(tourney)
+            elif request.POST.get('add_1'):
+                score.score = 1
+                score.save()
+            elif request.POST.get('add_2'):
+                score.score = 2
+                score.save()
+            elif request.POST.get('add_3'):
+                score.score = 3
+                score.save()
+            elif request.POST.get('add_4'):
+                score.score = 4
+                score.save()
+            elif request.POST.get('add_5'):
+                score.score = 5
+                score.save()
+        score_list = Score.objects.filter(tournament=tourney, player=request.user.player)
+        total = 0
+        for score in score_list:
+            total += int(score.score)
+        tplayer = tourney.players.filter(user=request.user)
+        context = {"tournament": tourney, "tplayer": tplayer, "holes": tourney.holes.filter(),
+                   "score_list": score_list, "next_hole": nextHole, "total": total}
+        print(context)
+        return render(request, 'tournament.html', context)
 
 
 def drinks(request):
@@ -76,7 +83,13 @@ def accountCreation(request):
 
 
 def home(request):
-    return render(request, "index.html")
+    if request.method == "POST" and request.user.user_type == 4:
+        request.user.manager.communityPosts = request.POST.get("communityPosts")
+        request.user.manager.save()
+    manager_list = Manager.objects.all()
+
+    context = {'manager_list': manager_list}
+    return render(request, "index.html", context)
 
 
 def homeRedirect():
@@ -86,17 +99,23 @@ def homeRedirect():
 def account(request):
     if request.user.is_anonymous:
         return HttpResponseRedirect('../login')
-    return render(request, "account.html")
+    balance = float(request.user.balance) / 100.0
+    context = {'balance': balance}
+    print(context)
+    return render(request, "account.html", context)
 
 
 def bank(request):
     if request.method == 'POST':
-        dest = User.objects.get(name=request.destAccount)
-        Transaction.objects.create_transaction(request.transAmount, dest)
+        dest = request.user
+        if request.POST.get("destAccount"):
+            dest = User.objects.get(username=request.POST.get("destAccount"))
+        amount = request.POST.get("transAmount")
+        print(amount)
+        Transaction.objects.create_transaction(amount, dest, request.user)
 
-        dest.balance += request.transAmount
-        return HttpResponse("sent money to " + dest)
-
+        dest.balance += float(amount) * 100
+        dest.save()
     context = {}
     context['current_balance'] = request.user.balance / 100 if not request.user.is_anonymous else 0.00
     if not request.user.is_anonymous:
@@ -199,30 +218,26 @@ def createAccount(request):
 def sponsor(request):
     if request.method == "POST":
         if request.user.user_type != 2:
-            return HttpResponse("Only sponsors can sponsor a tournament")
+            return HttpResponseForbidden("Only sponsors can sponsor a tournament")
         for t in Tournament.objects.all():
-            if str(t.date) == str(request.POST.get('date')):
-                return HttpResponse("Error, there is already a tournament on this day!")
-            if t.name == request.POST.get('tournamentName'):
+            if str(t.date) == str(request.POST.get('date')) or t.name == request.POST.get('tournamentName'):
                 # Tournaments with almost identical names can still be created
                 # including if the only difference is a space
-                return HttpResponse("Error, there's already a Tournament by this name")
+                tournaments_list = Tournament.objects.all()
+                context = {'tournaments_list': tournaments_list}
+                return render(request, "sponsor.html", context)
         newTournament = Tournament()
         newTournament.name = request.POST.get('tournamentName')
         newTournament.date = request.POST.get('date')
         newTournament.sponsor = request.user.sponsor
         newTournament.save()
-        return HttpResponse("Success for " + str(request.user.sponsor))
+        return homeRedirect()
     else:
         if request.user.is_anonymous or request.user.user_type != 2 and request.user.user_type != 4:
             return HttpResponseRedirect('../login')
         tournaments_list = Tournament.objects.all()
         context = {'tournaments_list': tournaments_list}
         return render(request, "sponsor.html", context)
-
-
-def transfer(request):
-    return render(request, 'transfer.html')
 
 
 def drinkMeister(request):
@@ -242,8 +257,8 @@ def drinkMeister(request):
 
 def events(request):
     tournaments_list = Tournament.objects.all()
-
-    context = {'tournaments_list': tournaments_list}
+    manager_list = Manager.objects.all()
+    context = {'tournaments_list': tournaments_list, "manager_list": manager_list}
     return render(request, "events.html", context)
 
 

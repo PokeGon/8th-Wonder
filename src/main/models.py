@@ -50,6 +50,7 @@ class Manager(models.Model):
     mostMoneyHeld = models.IntegerField()
     drinksSold = models.IntegerField()
     totalTournamentsMade = models.IntegerField()
+    communityPosts = models.TextField(max_length=2000, default="")
 
     @staticmethod
     def createTournament(name, startTime, endTime, sponsor, approved, completed):

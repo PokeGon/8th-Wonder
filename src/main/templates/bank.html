@@ -30,20 +30,19 @@
             }
         </script>
 
-
-
         <form action="" method="post" id="transfer-form" style="display:none"> {% csrf_token %}
             Transfer Amount<br>
-            $<input id="transAmount" type="number" min="0" step="0.01"><br>
-            <label for="destAccount">Destination Account: </label><input name="destAccount" id="destAccount" type="text"><br>
+            $<input name="transAmount" id="transAmount" type="number" max="1000" min="0.01" step="0.01" placeholder='0.00' required><br>
+            <label for="destAccount">Destination Account(Adds money to your account if no destination selected): </label><input name="destAccount" id="destAccount" type="text"><br>
             <input type="submit" value="submit"> <button onclick="revealTransfer()" id="transfer-reveal">Cancel</button>
         </form>
+
     </div>
 
 
     <div class="right column">
         Recent Transfers:
-        {% for t in context.transactions %}
+        {% for t in transactions %}
             <br>{{ t.name }} {{ t.amount }}
         {% empty %}
             <br>{{ t.name }} {{ t.amount }}

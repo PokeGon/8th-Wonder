@@ -3,6 +3,14 @@ body {
     margin: 0;
 }
 
+textarea {
+  width: 100%;
+}
+.communityPosts {
+    white-space: pre-line;
+    font-size: 2vw;
+}
+
 .leftcolumn {
     border-style: solid;
     border-color: #D68C45;

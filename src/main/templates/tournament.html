@@ -20,7 +20,11 @@
             <h2>Current Hole</h2>
             <select name="hole" id="holes">
                 {% for i in holes %}
-                    <option value="{{i}}">{{i}}</option>
+                    {% if i.holeNumber == next_hole %}
+                        <option value="{{i}}" selected>{{i}}</option>
+                    {% else %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
             <h2>Enter Score:</h2>
@@ -41,7 +45,7 @@
 <div class="right column">
     {% if tplayer %}
         Current Total:
-        <p>16</p>
+        <p>{{total}}</p>
         <table border="black">
             <tr>
                 <td>Hole</td>

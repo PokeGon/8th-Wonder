@@ -15,7 +15,6 @@ urlpatterns = [
     path('editDrinks/', views.drinksEdit, name='editDrinks'),
     path('orderConfirmation/', views.orderConfirmation, name='orderConfirmation'),
     path('sponsor/', views.sponsor, name='sponsor'),
-    path('transfer/', views.transfer, name='transfer'),
     path('account/', views.ProfileView.as_view(), name='account'),
     path('drinkMeister', views.drinkMeister, name='drinkMeister'),
     path('events', views.events, name='events'),

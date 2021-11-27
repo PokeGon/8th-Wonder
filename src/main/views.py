@@ -64,10 +64,11 @@ def drinks(request):
     else:
         if request.user.is_anonymous:
             return HttpResponseRedirect('../login')
+        holeList = Hole.objects.all()
         orders = Order.objects.all()
         drinkList = Drink.objects.all()
         user = request.user
-        return render(request, "drinks.html", {"orders": orders, "drinkList": drinkList, "user": user})
+        return render(request, "drinks.html", {"orders": orders, "drinkList": drinkList, "user": user, "holeList": holeList})
 
 
 def login(request):

@@ -29,7 +29,7 @@
         </select>
           <br><br>
           <lable for="location">Delivery Location: </lable><select id="location" name="location"  style="font-size: 1vw;">
-              {% if holeList != null %}
+              {% if holeList %}
               {% for hole in holeList %}
                 <option value="{{ hole.holeNumber }}">{{ hole.holeNumber }}</option>
               {% endfor %}

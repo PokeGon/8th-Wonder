@@ -16,9 +16,9 @@
     <ul>
         {% for sponsor in sponsors_list %}
             <p>{{ sponsor.user.first_name}} {{sponsor.user.last_name}} from the {{ sponsor.companyName}} company</p>
-            <button>Ban</button>
-            <button>Verify</button>
-            <button>Force Player Status</button>
+            <button class="accountButton">Ban</button>
+            <button class="accountButton">Verify</button>
+            <button class="accountButton">Force Player Status</button>
         {% endfor %}
     </ul>
 {% endif %}
@@ -28,9 +28,9 @@
         {% for drinkmeister in drinkmeisters_list %}
             <div>
                 <p>{{ drinkmeister.user.first_name}} {{drinkmeister.user.last_name}} (Employee ID: {{ drinkmeister.employeeID}})</p>
-                <button>Ban</button>
-                <button>Verify</button>
-                <button>Force Player Status</button>
+                <button class="accountButton">Ban</button>
+                <button class="accountButton">Verify</button>
+                <button class="accountButton">Force Player Status</button>
 
             </div>
         {% endfor %}

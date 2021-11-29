@@ -53,13 +53,18 @@ def tournament(request, tournamentName):
 def drinks(request):
     if request.method == 'POST':
         newDrink = Drink.objects.get(name=request.POST.get('newDrink'))
-        newOrder = Order()
-        newOrder.user = request.user
-        newOrder.drink = newDrink
-        newOrder.location = request.POST.get('location')
-        newOrder.specificInstructions = request.POST.get('instructions')
-        newOrder.save()
-        return HttpResponseRedirect('../orderConfirmation')
+        if (newDrink.price * 100) <= request.user.balance:
+            request.user.balance = request.user.balance - (newDrink.price * 100)
+            request.user.save()
+            newOrder = Order()
+            newOrder.user = request.user
+            newOrder.drink = newDrink
+            newOrder.location = request.POST.get('location')
+            newOrder.specificInstructions = request.POST.get('instructions')
+            newOrder.save()
+            return render(request, 'orderConfirmation.html', {"success": True})
+        else:
+            return render(request, 'orderConfirmation.html', {"success": False})
 
     else:
         if request.user.is_anonymous:
@@ -116,7 +121,7 @@ def account(request):
         newTournament.date = request.POST.get('date')
         newTournament.sponsor = request.user.sponsor
         newTournament.save()
-        return homeRedirect()
+        return HttpResponseRedirect('../events')
     if request.user.is_anonymous:
         return HttpResponseRedirect('../login')
     balance = float(request.user.balance) / 100.0

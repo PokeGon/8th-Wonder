@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Tournament">
+    <meta name="author" content="8th Wonder">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" media="screen and (max-width: 1040px)" href="{% static 'smallscreen.css' %}">
+</head>
+
+<body>
+
+{% include 'navBar.html' %}
+
+<div class="left column">
+    <h1>Tournament: {{ tournament.name }}</h1>
+    <h2>{{tournament.date}}: {{tournament.startTime}} to {{tournament.endTime}}</h2>
+
+    <p>Sponsor: {{ tournament.sponsor.user.first_name }} {{ tournament.sponsor.user.last_name }}</p>
+    <p>Company: {{ tournament.sponsor.companyName }}</p>
+    <p>Number of Holes: {{ numOfHoles }}</p>
+
+
+
+
+
+
+</div>
+<div class="right column">
+    {% if user.user_type == 1 %}
+        <button onclick="location.href='play'" class="eventButton" style="font-size: 1vw;">
+        <h2>Play</h2>
+        </button>
+    {% endif %}
+    {% if user.user_type == 4 or user.user_type == 2 and user.sponsor == tournament.sponsor %}
+        <button onclick="location.href='edit'" class="eventButton" style="font-size: 1vw;">
+        <h2>Edit</h2>
+        </button>
+    {% endif %}
+</div>
+
+</body>
+</html>

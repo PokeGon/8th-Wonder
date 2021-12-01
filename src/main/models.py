@@ -89,11 +89,6 @@ class Manager(models.Model):
         drink = Drink(name, price, instructions)
         drink.save()
 
-    @staticmethod
-    def newGame(name, date, sponsor, approved, completed):
-        tournament = Tournament(name, date, sponsor, approved, completed)
-        tournament.save()
-
 
 class Player(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, primary_key=True, related_name='player')
@@ -168,13 +163,12 @@ class Transaction(models.Model):
 class Tournament(models.Model):
     name = models.CharField(max_length=300, primary_key=True, unique=True)
     date = models.DateField(unique=True)
-    startTime = models.TimeField(default=datetime.time(7, 00))
-    endTime = models.TimeField(default=datetime.time(16, 30))
+    startTime = models.TimeField(default=datetime.time(9, 00))
+    endTime = models.TimeField(default=datetime.time(14, 30))
     players = models.ManyToManyField('Player', blank=True)
     sponsor = models.ForeignKey('Sponsor', on_delete=models.CASCADE)
     approved = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
-    numOfHoles = models.IntegerField(default=12)
     holes = models.ManyToManyField('Hole')
 
     def __str__(self):

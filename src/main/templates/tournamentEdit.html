@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Tournament">
+    <meta name="author" content="8th Wonder">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" media="screen and (max-width: 1040px)" href="{% static 'smallscreen.css' %}">
+</head>
+
+<body>
+
+{% include 'navBar.html' %}
+
+<div class="left column">
+    <h2>Tournament: {{ tournament.name }}</h2>
+    <form action="" method="post"> {% csrf_token %}
+        <input type="text" name="tourneyName" value="Tournament Name"/>
+        <input type="time" name="startTime" value="Start Time"/>
+        <input type="time" name="endTime" value="End Time"/>
+        <input type="date" name="date" value="date"/>
+
+        <hr>
+        <h2>Holes</h2>
+        {% for i in holes %}
+            <input type="checkbox" name="{{i}}" value="{{i}}"/>
+        {% endfor %}
+        <input type="submit" name="submit" value="submit"/>
+    </form>
+
+
+</div>
+<div class="right column">
+
+    <hr>
+    <h2>Players</h2>
+    {% for player in tourney.players %}
+    <p>Player {{player.first_name}} {{player.last_name}}</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

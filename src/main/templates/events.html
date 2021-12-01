@@ -21,10 +21,10 @@
 {% if tournaments_list %}
 <div>
     {% for t in tournaments_list %}
-    <a href="{% url 'tournament' t.name %}">
+    <a href="{% url 'tournamentInfo' t.name %}">
         <button class="eventButton">
             <h2>{{t.name}}</h2>
-            <h3>{{t.date}}: 3pm to 8pm</h3>
+            <h3>{{t.date}}: {{t.startTime}} to {{t.endTime}}</h3>
         </button>
     </a>
 <br>

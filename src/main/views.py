@@ -11,9 +11,7 @@ from .forms import *
 
 
 def tournament(request, tournamentName):
-    if request.user.user_type == 4 or request.user.user_type == 2:
-        ...
-    elif request.user.user_type == 1:
+    if request.user.user_type == 1:
         tourney = Tournament.objects.get(name=tournamentName)
         nextHole = 1
         if request.method == "POST":
@@ -47,7 +45,7 @@ def tournament(request, tournamentName):
         return render(request, 'tournament.html', context)
     else:
         context = {}
-        return render(request, 'tournament.html', context)
+        return redirect("tournamentInfo", tournamentName)
 
 
 def drinks(request):
@@ -73,7 +71,8 @@ def drinks(request):
         orders = Order.objects.all()
         drinkList = Drink.objects.all()
         user = request.user
-        return render(request, "drinks.html", {"orders": orders, "drinkList": drinkList, "user": user, "holeList": holeList})
+        return render(request, "drinks.html",
+                      {"orders": orders, "drinkList": drinkList, "user": user, "holeList": holeList})
 
 
 def login(request):
@@ -107,7 +106,14 @@ def homeRedirect():
 
 
 def account(request):
-    if request.method == "POST" and request.user.user_type == 2:
+    if request.method == "POST":
+        print(Hole.objects.all())
+        if Hole.objects.all() is None:
+            for i in range(12):
+                newHole = Hole()
+                newHole.holeNumber = i
+                newHole.par = 3
+                newHole.save()
         if request.user.user_type != 2:
             return HttpResponseForbidden("Only sponsors can sponsor a tournament")
         for t in Tournament.objects.all():
@@ -120,6 +126,8 @@ def account(request):
         newTournament.name = request.POST.get('tournamentName')
         newTournament.date = request.POST.get('date')
         newTournament.sponsor = request.user.sponsor
+        for hole in Hole.objects.all():
+            newTournament.holes.add(hole)
         newTournament.save()
         return HttpResponseRedirect('../events')
     if request.user.is_anonymous:
@@ -195,7 +203,8 @@ def createAccount(request):
     if request.method == "POST":
         for u in User.objects.all():
             if u.username == request.POST.get('username'):
-                return render(request, 'accountCreation.html', {'error_message' : "Username taken, Please choose another"})
+                return render(request, 'accountCreation.html',
+                              {'error_message': "Username taken, Please choose another"})
         newUser = User()
         newUser.username = request.POST.get('username')
         newUser.first_name = request.POST.get('firstName')
@@ -284,3 +293,20 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 def handler404(request, exception):
     return render(request, '404.html', {})
+
+
+def tournamentInfo(request, tournamentName):
+    tourney = Tournament.objects.get(name=tournamentName)
+    context = {"tournament": tourney, "holes": tourney.holes.filter(), "numOfHoles": len(tourney.holes.filter())}
+    print(request.user.sponsor.companyName)
+    return render(request, 'tournamentInfo.html', context)
+
+
+def tournamentEdit(request, tournamentName):
+    tourney = Tournament.objects.get(name=tournamentName)
+    if request.user.user_type == 4 or (request.user.user_type == 2 and request.user.sponsor == tourney.sponsor):
+        if request.method == "POST":
+            ...
+        context = {"tournament": tourney, "holes": tourney.holes.filter()}
+        return render(request, 'tournamentEdit.html', context)
+    return redirect("tournamentInfo")

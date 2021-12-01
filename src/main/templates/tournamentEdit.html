@@ -17,15 +17,15 @@
 <div class="left column">
     <h2>Tournament: {{ tournament.name }}</h2>
     <form action="" method="post"> {% csrf_token %}
-        <input type="text" name="tourneyName" value="Tournament Name"/>
-        <input type="time" name="startTime" value="Start Time"/>
-        <input type="time" name="endTime" value="End Time"/>
-        <input type="date" name="date" value="date"/>
+        <label for="tournamentName">Tournament Name:</label><input type="text" name="tourneyName" id="tournamentName"/><br>
+        <label for="startTime">Start:</label><input type="time" name="startTime" id="startTime"/><br>
+        <label for="endTime">End:</label><input type="time" name="endTime" id="endTime"/><br>
+        <label for="date">Date:</label><input type="date" name="date" id="date"/><br>
 
         <hr>
-        <h2>Holes</h2>
+        <h2>Holes:</h2>
         {% for i in holes %}
-            <input type="checkbox" name="{{i}}" value="{{i}}"/>
+            <label for="{{i}}">Hole {{i}}:</label><input type="checkbox" name="{{i}}" id="{{i}}"/><br>
         {% endfor %}
         <input type="submit" name="submit" value="submit"/>
     </form>
@@ -33,8 +33,6 @@
 
 </div>
 <div class="right column">
-
-    <hr>
     <h2>Players</h2>
     {% for player in tourney.players %}
     <p>Player {{player.first_name}} {{player.last_name}}</p>

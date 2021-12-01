@@ -22,6 +22,7 @@ urlpatterns = [
     path('manager', views.manager, name='manager'),
     path('verification', views.verification, name='verification'),
     path('createAccount', views.createAccount, name='createAccount'),
+    path('addHoles', views.addHoles, name='addHoles'),
 
     # Django Auth
     path('login/', auth_views.LoginView.as_view(template_name="login.html"), name='login'),

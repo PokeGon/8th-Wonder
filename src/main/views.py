@@ -107,11 +107,10 @@ def homeRedirect():
 
 def account(request):
     if request.method == "POST":
-        print(Hole.objects.all())
-        if Hole.objects.all() is None:
+        if not Hole.objects.all():
             for i in range(12):
                 newHole = Hole()
-                newHole.holeNumber = i
+                newHole.holeNumber = i+1
                 newHole.par = 3
                 newHole.save()
         if request.user.user_type != 2:
@@ -121,13 +120,15 @@ def account(request):
                 # Tournaments with almost identical names can still be created
                 # including if the only difference is a space
 
-                return HttpResponseBadRequest("Tournament with the same name or date already exists")
+                return HttpResponseRedirect('../account')
         newTournament = Tournament()
         newTournament.name = request.POST.get('tournamentName')
         newTournament.date = request.POST.get('date')
         newTournament.sponsor = request.user.sponsor
-        for hole in Hole.objects.all():
-            newTournament.holes.add(hole)
+        # TESTS FOR DEBUGGING
+        # newTournament.addHoles()
+        # for hole in Hole.objects.filter():
+        #      hole.addHoles(newTournament)
         newTournament.save()
         return HttpResponseRedirect('../events')
     if request.user.is_anonymous:
@@ -298,7 +299,6 @@ def handler404(request, exception):
 def tournamentInfo(request, tournamentName):
     tourney = Tournament.objects.get(name=tournamentName)
     context = {"tournament": tourney, "holes": tourney.holes.filter(), "numOfHoles": len(tourney.holes.filter())}
-    print(request.user.sponsor.companyName)
     return render(request, 'tournamentInfo.html', context)
 
 
@@ -307,6 +307,11 @@ def tournamentEdit(request, tournamentName):
     if request.user.user_type == 4 or (request.user.user_type == 2 and request.user.sponsor == tourney.sponsor):
         if request.method == "POST":
             ...
-        context = {"tournament": tourney, "holes": tourney.holes.filter()}
+        context = {"tournament": tourney, "holes": Hole.objects.filter()}
         return render(request, 'tournamentEdit.html', context)
     return redirect("tournamentInfo")
+
+
+def addHoles(request):
+    context = {}
+    return render(request, 'addHoles.html', context)

@@ -28,18 +28,22 @@
 
 
 </div>
-<div class="right column">
+
     {% if user.user_type == 1 %}
+    <div class="right column">
         <button onclick="location.href='play'" class="eventButton" style="font-size: 1vw;">
         <h2>Play</h2>
         </button>
+    </div>
     {% endif %}
     {% if user.user_type == 4 or user.user_type == 2 and user.sponsor == tournament.sponsor %}
+    <div class="right column">
         <button onclick="location.href='edit'" class="eventButton" style="font-size: 1vw;">
         <h2>Edit</h2>
         </button>
+    </div>
     {% endif %}
-</div>
+
 
 </body>
 </html>

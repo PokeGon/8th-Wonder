@@ -9,13 +9,12 @@ class PlayerTestCase(TestCase):
                                                 password="asdf",
                                                 user_type="1",
                                                 phone_number="1234567899")
-        models.Player.objects.create(user=admin, currentHole=1, score=3, hole=1)
+        models.Player.objects.create(user=admin)
 
     def test_player(self):
         player = models.Player.objects.get(user=0)
-        self.assertEqual(player.hole + 1, 2)
-        self.assertEqual(player.score - 1, 2)
         self.assertEqual(player.user.username, "admin")
+        self.assertEqual(player.user.phone_number, "1234567899")
 
 
 class UserTestCase(TestCase):

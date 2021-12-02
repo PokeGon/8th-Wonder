@@ -17,17 +17,17 @@
 
 <div class="left column">
 
-  <h2>Edit Drinks</h2>
+  <h1>Edit Drinks</h1>
 
-  <h3>Add New Drink</h3>
-  <form action="{% url 'editDrinks' %}" method="POST" style="font-size: 1.2vw;">
+  <h2>Add New Drink</h2>
+  <form action="{% url 'editDrinks' %}" method="POST" style="font-size: 1.5vw;">
     {% csrf_token %}
     {{ addDrinkForm.as_p }}
     <br><input type="submit" value="Confirm" class="accountButton">
   </form><br>
 
-  <h3>Delete Drink</h3>
-  <form action="{% url 'editDrinks' %}" method="POST" style="font-size: 1.2vw;">{% csrf_token %}
+  <h2>Delete Drink</h2>
+  <form action="{% url 'editDrinks' %}" method="POST" style="font-size: 1.5vw;">{% csrf_token %}
     <label for="deleteDrink">Drink: </label><select id="deleteDrink" name="deleteDrink">
       {% if drinkList %}
         {% for drink in drinkList %}
@@ -38,8 +38,8 @@
     <br><br><input type="submit" value="Confirm" class="accountButton">
   </form><br>
 
-  <h3>Edit Current Drink</h3>
-  <form action="{% url 'editDrinks' %}" method="POST" style="font-size: 1.2vw;">{% csrf_token %}
+  <h2>Edit Current Drink</h2>
+  <form action="{% url 'editDrinks' %}" method="POST" style="font-size: 1.5vw;">{% csrf_token %}
     <label for="drink">Drink: </label><select id="drink" name="drink">
       {% if drinkList %}
         {% for drink in drinkList %}
@@ -60,7 +60,7 @@
     <h2>Available Drinks</h2>
     {% if drinkList %}
     {% for drink in drinkList %}
-      <div class="orderButton" style="width: 80%;">
+      <div class="orderButton">
       <h3>{{ drink.name }}</h3>
       <p> - ${{ drink.price }}</p>
       <p> - {{ drink.instructions }}</p>

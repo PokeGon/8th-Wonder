@@ -60,6 +60,7 @@ def drinks(request):
             newOrder.location = request.POST.get('location')
             newOrder.specificInstructions = request.POST.get('instructions')
             newOrder.save()
+            Transaction.objects.create_transaction((0 - newDrink.price), request.user, request.user)
             return render(request, 'orderConfirmation.html', {"success": True})
         else:
             return render(request, 'orderConfirmation.html', {"success": False})
@@ -68,7 +69,7 @@ def drinks(request):
         if request.user.is_anonymous:
             return HttpResponseRedirect('../login')
         holeList = Hole.objects.all()
-        orders = Order.objects.all()
+        orders = Order.objects.filter(served=False)
         drinkList = Drink.objects.all()
         user = request.user
         return render(request, "drinks.html",
@@ -258,7 +259,8 @@ def drinkMeister(request):
         if request.user.user_type != 3 and request.user.user_type != 4:
             return HttpResponse("Only Drink Meisters can deliver orders")
         order = Order.objects.get(id=request.POST.get('order'))
-        order.delete()
+        order.served = True
+        order.save()
         return HttpResponseRedirect('#')
     else:
         if request.user.is_anonymous or request.user.user_type != 3 and request.user.user_type != 4:

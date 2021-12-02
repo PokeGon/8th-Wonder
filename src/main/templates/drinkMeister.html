@@ -20,7 +20,7 @@
 
     <form class="right" style="width: 80%" action="{% url 'drinkMeister' %}" method="POST">{% csrf_token %}
         {% if orderList %}
-            <select id="order" name="order" style="font-size: 1vw;">
+            <select id="order" name="order" style="font-size: 1.5vw;">
             {% for order in orderList %}
                 <option value="{{ order.id }}">{{ order.user }} - {{ order.drink.name }}</option>
             {% endfor %}
@@ -55,7 +55,7 @@
     <h2>Available Drinks</h2>
     {% if drinkList %}
     {% for drink in drinkList %}
-      <div class="orderButton" style="width: 80%;">
+      <div class="orderButton">
       <h3>{{ drink.name }}</h3>
       <p> - ${{ drink.price }}</p>
       <p> - {{ drink.instructions }}</p>

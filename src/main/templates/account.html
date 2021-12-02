@@ -46,24 +46,24 @@
 
     <div class="right column">
         <a href="{% url 'bank' %}">
-        <button onclick="location.href='bank'" class="eventButton" style="font-size: 1vw;">
+        <button onclick="location.href='bank'" class="eventButton">
         <h2>Add Money to Account</h2>
         </button>
         </a>
 
         {% if user.user_type == 4 %}
-        <h4>Other options</h4>
+        <h3>Other options</h3>
         {% include "manager.html" %}
     {% endif %}
     {% if user.user_type == 2 %}
-        <h4>Other options</h4>
+        <h3>Other options</h3>
         {% include "sponsor.html" %}
     {% endif %}
         {% if user.user_type == 3 %}
-        <h4>Other options</h4>
+        <h3>Other options</h3>
         <br>
     <a href="{% url 'drinkMeister' %}">
-        <button onclick="location.href='drinkMeister'"  class="eventButton" style="font-size: 1vw;">
+        <button onclick="location.href='drinkMeister'"  class="eventButton">
         <h2>Serve Drinks</h2>
         </button>
     </a>

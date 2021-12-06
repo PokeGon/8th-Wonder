@@ -109,29 +109,35 @@ def homeRedirect():
 
 def account(request):
     if request.method == "POST":
-        if not Hole.objects.all():
-            for i in range(12):
-                newHole = Hole()
-                newHole.holeNumber = i+1
-                newHole.par = 3
-                newHole.save()
-        if request.user.user_type != 2:
-            return HttpResponseForbidden("Only sponsors can sponsor a tournament")
-        for t in Tournament.objects.all():
-            if str(t.date) == str(request.POST.get('date')) or t.name == request.POST.get('tournamentName'):
-                # Tournaments with almost identical names can still be created
-                # including if the only difference is a space
+        if 50000 <= request.user.balance:
+            request.user.balance = request.user.balance - (50000)
+            request.user.save()
+            Transaction.objects.create_transaction((0 - 500), request.user, request.user)
+            if not Hole.objects.all():
+                for i in range(12):
+                    newHole = Hole()
+                    newHole.holeNumber = i+1
+                    newHole.par = 3
+                    newHole.save()
+            if request.user.user_type != 2:
+                return HttpResponseForbidden("Only sponsors can sponsor a tournament")
+            for t in Tournament.objects.all():
+                if str(t.date) == str(request.POST.get('date')) or t.name == request.POST.get('tournamentName'):
+                    # Tournaments with almost identical names can still be created
+                    # including if the only difference is a space
 
-                return HttpResponseRedirect('../account')
-        newTournament = Tournament()
-        newTournament.name = request.POST.get('tournamentName')
-        newTournament.date = request.POST.get('date')
-        newTournament.sponsor = request.user.sponsor
-        newTournament.save()
-        for hole in Hole.objects.all():
-            newTournament.addHoles(hole.holeNumber)
-        newTournament.save()
-        return HttpResponseRedirect('../events')
+                    return HttpResponseRedirect('../account')
+            newTournament = Tournament()
+            newTournament.name = request.POST.get('tournamentName')
+            newTournament.date = request.POST.get('date')
+            newTournament.sponsor = request.user.sponsor
+            newTournament.save()
+            for hole in Hole.objects.all():
+                newTournament.addHoles(hole.holeNumber)
+            newTournament.save()
+            return HttpResponseRedirect('../events')
+        else:
+            return render(request, 'orderConfirmation.html', {"success": False})
     if request.user.is_anonymous:
         return HttpResponseRedirect('../login')
     balance = float(request.user.balance) / 100.0

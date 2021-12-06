@@ -27,6 +27,9 @@
 
   
 ## Build instructions
+
+	Instructions for local Server:
+
 	Clone the repository in git bash
 	$ git clone https://github.com/PokeGon/8th-Wonder.git
     
@@ -38,7 +41,7 @@
 
     Put that address into your search bar and run and you should be on the site!
 
-	Before the end of the project we will host the web application on AWS to be remote accessible. 
+	To access the live site, enter IP address into browser: 52.41.103.175
 
 ## Unit testing instructions
 	Unit tests will cover all use cases laid out in the use case diagrams. They will be found in a designated 

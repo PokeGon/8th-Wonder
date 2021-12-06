@@ -169,29 +169,19 @@ class Tournament(models.Model):
     sponsor = models.ForeignKey('Sponsor', on_delete=models.CASCADE)
     approved = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
-    holes = models.ManyToManyField('Hole', through='TournamentHoles')
+    holes = models.ManyToManyField('Hole')
 
-    def addHoles(self):
-        holes = Hole.objects.filter()
-        self.holes.set(holes)
+    def addHoles(self, holeList):
+        self.holes.add(holeList)
         self.save()
 
     def __str__(self):
         return str(self.name) + " tournament - " + str(self.date)
 
 
-class TournamentHoles(models.Model):
-    hole = models.ForeignKey('Hole', on_delete=models.CASCADE)
-    tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
-
-
 class Hole(models.Model):
     holeNumber = models.IntegerField(primary_key=True)
     par = models.SmallIntegerField(default=3)
-
-    def addHole(self, tournament):
-        tourneyHole = TournamentHoles(hole=self, tournament=tournament)
-        tourneyHole.save()
 
     def __str__(self):
         return str(self.holeNumber)

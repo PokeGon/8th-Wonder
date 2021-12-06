@@ -49,6 +49,12 @@
 	The web app may be tested by going to the website and creating an account. 
 	A admin account will be created in order to test all the actions from any user.
 
+## Login Credentials
+    Player: playerusername playerpassword
+    Sponsor: sponsorusername sponsorpassword
+    Manager: managerusername managerpassword
+    Drink Meister: drinkmeisterusername drinkmeisterpassword
+
 ## Other development notes, as needed
 
 

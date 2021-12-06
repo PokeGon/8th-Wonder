@@ -126,10 +126,9 @@ def account(request):
         newTournament.name = request.POST.get('tournamentName')
         newTournament.date = request.POST.get('date')
         newTournament.sponsor = request.user.sponsor
-        # TESTS FOR DEBUGGING
-        # newTournament.addHoles()
-        # for hole in Hole.objects.filter():
-        #      hole.addHoles(newTournament)
+        newTournament.save()
+        for hole in Hole.objects.all():
+            newTournament.addHoles(hole.holeNumber)
         newTournament.save()
         return HttpResponseRedirect('../events')
     if request.user.is_anonymous:
@@ -305,6 +304,9 @@ def tournamentInfo(request, tournamentName):
 
 
 def tournamentEdit(request, tournamentName):
+    if request.method == "POST":
+
+        ...
     tourney = Tournament.objects.get(name=tournamentName)
     if request.user.user_type == 4 or (request.user.user_type == 2 and request.user.sponsor == tourney.sponsor):
         if request.method == "POST":

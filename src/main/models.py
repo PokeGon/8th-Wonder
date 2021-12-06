@@ -161,7 +161,8 @@ class Transaction(models.Model):
 
 
 class Tournament(models.Model):
-    name = models.CharField(max_length=300, primary_key=True, unique=True)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=300, unique=True)
     date = models.DateField(unique=True)
     startTime = models.TimeField(default=datetime.time(9, 00))
     endTime = models.TimeField(default=datetime.time(14, 30))

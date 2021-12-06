@@ -15,12 +15,13 @@ def tournament(request, tournamentName):
         tourney = Tournament.objects.get(name=tournamentName)
         nextHole = 1
         if request.method == "POST":
-            hole = Hole.objects.get(holeNumber=request.POST.get('hole'))
-            nextHole = int(request.POST.get('hole')) + 1
-            score = Score.objects.get(tournament=tourney, player=request.user.player, hole=hole)
             if request.POST.get('join'):
                 request.user.player.joinTournament(tourney)
-            elif request.POST.get('add_1'):
+            else:
+                hole = Hole.objects.get(holeNumber=request.POST.get('hole'))
+                nextHole = int(request.POST.get('hole')) + 1
+                score = Score.objects.get(tournament=tourney, player=request.user.player, hole=hole)
+            if request.POST.get('add_1'):
                 score.score = 1
                 score.save()
             elif request.POST.get('add_2'):
@@ -304,14 +305,23 @@ def tournamentInfo(request, tournamentName):
 
 
 def tournamentEdit(request, tournamentName):
+    # This functionality is developmental
     if request.method == "POST":
-
-        ...
+        tournamentUpdate = Tournament.objects.get(name=tournamentName)
+        tournamentUpdate.name = request.POST.get('tournamentName')
+        tournamentUpdate.date = request.POST.get('date')
+        tournamentUpdate.startTime = request.POST.get('startTime')
+        tournamentUpdate.endTime = request.POST.get('endTime')
+        for hole in Hole.objects.all():
+            if request.POST.get(hole.holeNumber):
+                tournamentUpdate.holes.add(hole)
+            else:
+                tournamentUpdate.holes.remove(hole)
     tourney = Tournament.objects.get(name=tournamentName)
     if request.user.user_type == 4 or (request.user.user_type == 2 and request.user.sponsor == tourney.sponsor):
         if request.method == "POST":
             ...
-        context = {"tournament": tourney, "holes": Hole.objects.filter()}
+        context = {"tournament": tourney, "holes": Hole.objects.filter(), "tournamentHoles": tourney.holes.filter()}
         return render(request, 'tournamentEdit.html', context)
     return redirect("tournamentInfo")
 
